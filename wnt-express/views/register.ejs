@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+
+<section class="container mt-5 mb-5" style="min-height: 50vh; display: flex; align-items: center; justify-content: center;">
+    <div class="login-box card" style="max-width: 400px; width: 100%; text-align: center;">
+        <h2 style="margin-bottom: 2rem; color: var(--neon-cyan);">ĐĂNG KÝ WNT</h2>
+        
+        <% if (error) { %>
+            <div style="background: rgba(255, 46, 99, 0.2); color: var(--live-red); padding: 10px; margin-bottom: 1rem; border-radius: 4px; border: 1px solid var(--live-red);">
+                <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/register" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
+            <div style="text-align: left;">
+                <label for="username" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Tài khoản mới</label>
+                <input type="text" id="username" name="username" required 
+                       style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: white; outline: none;">
+            </div>
+            
+            <div style="text-align: left;">
+                <label for="password" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Mật khẩu</label>
+                <input type="password" id="password" name="password" required 
+                       style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: white; outline: none;">
+            </div>
+            
+            <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Tạo Tài Khoản</button>
+        </form>
+        
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-muted);">
+            Đã có tài khoản? <a href="/login" class="text-neon">Đăng nhập ngay</a>
+        </p>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

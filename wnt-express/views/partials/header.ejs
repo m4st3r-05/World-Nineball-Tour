@@ -21,6 +21,15 @@
                 <li><a href="/">Trang Chủ</a></li>
                 <li><a href="/tournaments">Giải Đấu</a></li>
                 <li><a href="/rankings">Bảng Xếp Hạng</a></li>
+                
+                <% if (typeof user !== 'undefined' && user) { %>
+                    <li><a href="#" class="text-neon">Chào, <%= user.username %></a></li>
+                    <li><a href="/logout" class="btn-small">Đăng Xuất</a></li>
+                <% } else { %>
+                    <li><a href="/login" class="btn-small">Đăng Nhập</a></li>
+                    <li><a href="/register" class="btn-small btn-secondary">Đăng Ký</a></li>
+                <% } %>
+
                 <li><a href="#" class="btn-live">🔴 LIVE TRỰC TIẾP</a></li>
             </ul>
         </nav>
