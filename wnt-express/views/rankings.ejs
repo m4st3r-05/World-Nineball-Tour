@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+    <h1>BẢNG XẾP HẠNG THẾ GIỚI</h1>
+    <p>WNT Official World Rankings</p>
+</section>
+
+<section class="container mt-5 mb-5">
+    <table class="ranking-table">
+        <thead>
+            <tr>
+                <th>Hạng</th>
+                <th>Cơ Thủ</th>
+                <th>Quốc Gia</th>
+                <th>Điểm Số</th>
+                <th>Chi Tiết</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% players.forEach(p => { %>
+                <tr>
+                    <td class="r-rank">#<%= p.rank %></td>
+                    <td class="r-name">
+                        <img src="<%= p.img %>" alt="<%= p.name %>" class="r-avatar">
+                        <%= p.name %>
+                    </td>
+                    <td class="r-country"><%= p.country %></td>
+                    <td class="r-points"><%= p.points %></td>
+                    <td><button class="btn btn-small">Hồ Sơ</button></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</section>
+
+<%- include('partials/footer') %>

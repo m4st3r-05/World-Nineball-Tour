@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+    <h1>LỊCH TRÌNH GIẢI ĐẤU (WNT CALENDAR)</h1>
+    <p>Các giải Major, Ranking và Invitational năm 2026</p>
+</section>
+
+<section class="container mt-5 mb-5">
+    <div class="filter-bar">
+        <button class="btn btn-filter active">Tất cả</button>
+        <button class="btn btn-filter">Major Events</button>
+        <button class="btn btn-filter">Ranking Events</button>
+    </div>
+
+    <div class="list tournaments-list">
+        <% tournaments.forEach(t => { %>
+            <div class="list-item tournament-list-item">
+                <div class="t-date"><%= t.date %></div>
+                <div class="t-info">
+                    <h3><%= t.name %></h3>
+                    <span class="t-location">📍 <%= t.location %></span>
+                </div>
+                <div class="t-prize"><%= t.prize %></div>
+                <div class="t-type <%= t.type === 'Major' ? 'text-gold' : 'text-cyan' %>"><%= t.type %></div>
+                <div class="t-action"><button class="btn btn-outline">CHI TIẾT</button></div>
+            </div>
+        <% }) %>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,58 @@
+<%- include('partials/header') %>
+
+<section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+        <h1 class="hero-title">GIẢI VÔ ĐỊCH THẾ GIỚI MÔN POOL 9 BI</h1>
+        <p class="hero-subtitle">Nơi Hội Tụ Các Cơ Thủ Hàng Đầu Thế Giới</p>
+        <div class="hero-actions">
+            <a href="/tournaments" class="btn btn-primary">XEM LỊCH THI ĐẤU</a>
+            <a href="/rankings" class="btn btn-secondary">BẢNG XẾP HẠNG</a>
+        </div>
+    </div>
+</section>
+
+<section class="ticker">
+    <div class="ticker-content">
+        🔴 LIVE: Fedor Gorst 8 - 7 Joshua Filler | Race to 13 | Bàn TV Table | <a href="#">XEM NGAY</a>
+    </div>
+</section>
+
+<section class="container mt-5">
+    <div class="section-header">
+        <h2>GIẢI ĐẤU NỔI BẬT</h2>
+    </div>
+    <div class="grid tournaments-grid">
+        <% tournaments.forEach(t => { %>
+            <div class="card tournament-card">
+                <div class="card-badge <%= t.type === 'Major' ? 'badge-gold' : 'badge-cyan' %>"><%= t.type %></div>
+                <h3><%= t.name %></h3>
+                <p class="meta">📍 <%= t.location %></p>
+                <p class="meta">📅 <%= t.date %></p>
+                <div class="card-footer">
+                    <span class="prize">💰 <%= t.prize %></span>
+                    <span class="status <%= t.status === 'Finished' ? 'status-finished' : 'status-upcoming' %>"><%= t.status %></span>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</section>
+
+<section class="container mt-5 mb-5">
+    <div class="section-header">
+        <h2>TOP CƠ THỦ HÀNG ĐẦU</h2>
+    </div>
+    <div class="grid players-grid">
+        <% topPlayers.forEach(p => { %>
+            <div class="card player-card">
+                <div class="player-rank">#<%= p.rank %></div>
+                <img src="<%= p.img %>" alt="<%= p.name %>" class="player-avatar">
+                <h3><%= p.name %></h3>
+                <p class="player-country"><%= p.country %></p>
+                <p class="player-points">⭐ <%= p.points %> Điểm</p>
+            </div>
+        <% }) %>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
