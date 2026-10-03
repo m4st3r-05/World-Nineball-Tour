@@ -52,12 +52,16 @@ a {
 nav ul {
     display: flex;
     list-style: none;
-    gap: 2rem;
+    gap: 1rem;
     align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
 }
 
 nav ul li a {
     font-weight: 600;
+    font-size: 0.85rem;
+    white-space: nowrap;
     transition: color 0.3s;
 }
 

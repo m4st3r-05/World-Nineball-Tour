@@ -23,6 +23,9 @@
                 <li><a href="/rankings">Bảng Xếp Hạng</a></li>
                 
                 <% if (typeof user !== 'undefined' && user) { %>
+                    <% if (user.role === 'admin') { %>
+                        <li><a href="/admin" style="color: var(--neon-gold);">⚙️ Quản Trị Hệ Thống</a></li>
+                    <% } %>
                     <li><a href="#" class="text-neon">Chào, <%= user.username %></a></li>
                     <li><a href="/logout" class="btn-small">Đăng Xuất</a></li>
                 <% } else { %>

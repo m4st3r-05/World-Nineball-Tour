@@ -1,0 +1,80 @@
+<%- include('partials/header') %>
+
+<section class="page-header" style="background: linear-gradient(to bottom, #111, var(--bg-dark));">
+    <h1>⚙️ BẢNG QUẢN TRỊ HỆ THỐNG</h1>
+    <p style="color: var(--neon-gold);">Chào mừng Quản trị viên, bạn có quyền chỉnh sửa toàn bộ dữ liệu WNT.</p>
+</section>
+
+<section class="container mt-5 mb-5">
+    
+    <!-- Quản lý Giải đấu -->
+    <div class="card mb-5">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2>🏆 Quản Lý Giải Đấu</h2>
+            <button class="btn btn-primary">+ THÊM GIẢI MỚI</button>
+        </div>
+        
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tên Giải Đấu</th>
+                    <th>Loại Giải</th>
+                    <th>Trạng Thái</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tournaments.forEach(t => { %>
+                    <tr>
+                        <td><%= t.id %></td>
+                        <td style="font-weight: bold;"><%= t.name %></td>
+                        <td class="<%= t.type === 'Major' ? 'text-gold' : 'text-cyan' %>"><%= t.type %></td>
+                        <td><%= t.status %></td>
+                        <td>
+                            <button class="btn btn-small" style="background-color: var(--neon-cyan); color: #000;">Sửa</button>
+                            <button class="btn btn-small" style="background-color: var(--live-red); color: #fff;">Xóa</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Quản lý Cơ thủ -->
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2>🧑‍🤝‍🧑 Quản Lý Cơ Thủ (Players)</h2>
+            <button class="btn btn-primary">+ THÊM CƠ THỦ</button>
+        </div>
+        
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Hạng</th>
+                    <th>Tên Cơ Thủ</th>
+                    <th>Quốc Gia</th>
+                    <th>Điểm</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% players.forEach(p => { %>
+                    <tr>
+                        <td>#<%= p.rank %></td>
+                        <td style="font-weight: bold;"><%= p.name %></td>
+                        <td><%= p.country %></td>
+                        <td class="text-gold"><%= p.points %></td>
+                        <td>
+                            <button class="btn btn-small" style="background-color: var(--neon-cyan); color: #000;">Sửa</button>
+                            <button class="btn btn-small" style="background-color: var(--live-red); color: #fff;">Xóa</button>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+<%- include('partials/footer') %>

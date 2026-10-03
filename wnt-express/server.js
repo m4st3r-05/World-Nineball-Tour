@@ -32,6 +32,15 @@ app.use((req, res, next) => {
     next();
 });
 
+// Middleware to protect Admin Routes
+const isAdmin = (req, res, next) => {
+    if (req.session.user && req.session.user.role === 'admin') {
+        next();
+    } else {
+        res.status(403).send('<h1>403 Forbidden</h1><p>Bạn không có quyền truy cập trang này!</p><a href="/">Về trang chủ</a>');
+    }
+};
+
 // Routes
 app.get('/', (req, res) => {
     res.render('index', { 
@@ -52,6 +61,15 @@ app.get('/rankings', (req, res) => {
     res.render('rankings', { 
         title: 'Bảng Xếp Hạng',
         players: mockData.players 
+    });
+});
+
+// Admin Dashboard Route
+app.get('/admin', isAdmin, (req, res) => {
+    res.render('admin', { 
+        title: 'Bảng Quản Trị WNT',
+        tournaments: mockData.tournaments,
+        players: mockData.players
     });
 });
 
