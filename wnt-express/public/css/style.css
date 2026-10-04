@@ -501,3 +501,114 @@ nav ul li a:hover {
         font-size: 2.5rem;
     }
 }
+
+/* Event Cards Layout */
+.event-card {
+    background: #fff;
+    border: none;
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.event-card-img-wrap {
+    height: 300px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px;
+}
+
+.event-card-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    z-index: 1;
+}
+
+.event-card-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+.event-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-style: italic;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.event-location {
+    font-size: 1rem;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.event-badge {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.badge-major {
+    background: #ff2e63;
+    color: #fff;
+}
+
+.badge-ranking {
+    background: #00d231;
+    color: #fff;
+}
+
+.badge-invitational {
+    background: #333;
+    color: #fff;
+}
+
+.event-card-bottom {
+    background: #fff;
+    color: #000;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-date {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-results {
+    background: #3a4a5e;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s;
+}
+
+.btn-results:hover {
+    background: #2a3644;
+}

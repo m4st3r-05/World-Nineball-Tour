@@ -1,55 +1,38 @@
 <%- include('partials/header') %>
 
-<section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-        <h1 class="hero-title">GIẢI VÔ ĐỊCH THẾ GIỚI MÔN POOL 9 BI</h1>
-        <p class="hero-subtitle">Nơi Hội Tụ Các Cơ Thủ Hàng Đầu Thế Giới</p>
-        <div class="hero-actions">
-            <a href="/tournaments" class="btn btn-primary">XEM LỊCH THI ĐẤU</a>
-            <a href="/rankings" class="btn btn-secondary">BẢNG XẾP HẠNG</a>
+<section class="banner-section" style="margin-top: 20px;">
+    <div class="container">
+        <div class="banner-box" style="background: url('https://wntlivescores.com/images/banner.jpg') center/cover; height: 120px; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,13,20,0.8) 0%, rgba(10,13,20,0.3) 100%); z-index: 1;"></div>
+            <div style="position: relative; z-index: 2; display: flex; align-items: center; width: 100%; justify-content: space-between;">
+                <h2 style="font-size: 2rem; font-style: italic; font-weight: 900; color: #fff; text-transform: uppercase;">LIVE ACTION AT <span style="font-size: 2.5rem;">wnt<span style="color: red;">.</span>tv</span></h2>
+                <a href="#" style="background: #ff2e63; color: white; padding: 10px 20px; font-weight: bold; font-style: italic; border-radius: 4px; text-decoration: none; text-transform: uppercase;">WATCH NOW</a>
+            </div>
         </div>
     </div>
 </section>
 
-<section class="ticker">
-    <div class="ticker-content">
-        🔴 LIVE: Fedor Gorst 8 - 7 Joshua Filler | Race to 13 | Bàn TV Table | <a href="#">XEM NGAY</a>
-    </div>
-</section>
-
-<section class="container mt-5">
-    <div class="section-header">
-        <h2>GIẢI ĐẤU NỔI BẬT</h2>
-    </div>
+<section class="container mt-5 mb-5">
     <div class="grid tournaments-grid">
         <% tournaments.forEach(t => { %>
-            <div class="card tournament-card">
-                <div class="card-badge <%= t.type === 'Major' ? 'badge-gold' : 'badge-cyan' %>"><%= t.type %></div>
-                <h3><%= t.name %></h3>
-                <p class="meta">📍 <%= t.location %></p>
-                <p class="meta">📅 <%= t.date %></p>
-                <div class="card-footer">
-                    <span class="prize">💰 <%= t.prize %></span>
-                    <span class="status <%= t.status === 'Finished' ? 'status-finished' : 'status-upcoming' %>"><%= t.status %></span>
+            <div class="event-card">
+                <div class="event-card-img-wrap" style="background-image: url('<%= t.image || 'https://via.placeholder.com/400x300/333/fff?text=Waiting+for+image' %>');">
+                    <div class="event-card-content">
+                        <h3 class="event-title"><%= t.name %></h3>
+                        <p class="event-location"><%= t.location %></p>
+                    </div>
+                    <% if(t.type === 'Major') { %>
+                        <span class="event-badge badge-major">Major Event</span>
+                    <% } else if(t.type === 'Ranking') { %>
+                        <span class="event-badge badge-ranking">Ranking Event</span>
+                    <% } else { %>
+                        <span class="event-badge badge-invitational"><%= t.type %> Event</span>
+                    <% } %>
                 </div>
-            </div>
-        <% }) %>
-    </div>
-</section>
-
-<section class="container mt-5 mb-5">
-    <div class="section-header">
-        <h2>TOP CƠ THỦ HÀNG ĐẦU</h2>
-    </div>
-    <div class="grid players-grid">
-        <% topPlayers.forEach(p => { %>
-            <div class="card player-card">
-                <div class="player-rank">#<%= p.rank %></div>
-                <img src="<%= p.img %>" alt="<%= p.name %>" class="player-avatar">
-                <h3><%= p.name %></h3>
-                <p class="player-country"><%= p.country %></p>
-                <p class="player-points">⭐ <%= p.points %> Điểm</p>
+                <div class="event-card-bottom">
+                    <div class="event-date">📅 <%= t.date %></div>
+                    <a href="#" class="btn-results">❖ RESULTS</a>
+                </div>
             </div>
         <% }) %>
     </div>
