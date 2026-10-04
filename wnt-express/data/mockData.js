@@ -1,8 +1,8 @@
 module.exports = {
     tournaments: [
-        { id: 1, name: "World Pool Championship 2026", date: "01 - 06 June 2026", location: "Jeddah, Saudi Arabia", prize: "$1,000,000", type: "Major", status: "Upcoming", image: "/img/world-pool-championship.jpg" },
+        { id: 1, name: "World Pool Championship 2026", date: "01 - 06 June 2026", location: "Jeddah, Saudi Arabia", prize: "$1,000,000", type: "Ranking", status: "Upcoming", image: "/img/world-pool-championship.jpg" },
         { id: 2, name: "US Open Pool Championship", date: "19 - 24 August 2026", location: "Atlantic City, USA", prize: "$300,000", type: "Major", status: "Upcoming", image: "/img/us-open-pool-championship.jpg" },
-        { id: 3, name: "European Open Pool Championship", date: "06 - 11 August 2026", location: "Fulda, Germany", prize: "$200,000", type: "Ranking", status: "Finished", image: "/img/european-open-pool-championship.jpg" },
+        { id: 3, name: "European Open Pool Championship", date: "06 - 11 August 2026", location: "Fulda, Germany", prize: "$200,000", type: "Major", status: "Finished", image: "/img/european-open-pool-championship.jpg" },
         { id: 4, name: "Hanoi Open Pool Championship", date: "08 - 13 October 2026", location: "Hanoi, Vietnam", prize: "$200,000", type: "Major", status: "Upcoming", image: "/img/hanoi-open-pool-championship.jpg" }
     ],
     players: [
