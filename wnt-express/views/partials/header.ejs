@@ -14,26 +14,28 @@
 <body>
     <header class="navbar">
         <div class="logo">
-            <h2><span class="text-neon">WORLD</span> NINEBALL TOUR</h2>
+            <h2 style="font-size: 2.5rem; font-style: italic; font-weight: 900; letter-spacing: -2px; color: #000;">wnt<span style="color: red;">.</span></h2>
         </div>
-        <nav>
+        <nav class="nav-center">
             <ul>
-                <li><a href="/">Trang Chủ</a></li>
-                <li><a href="/tournaments">Giải Đấu</a></li>
-                <li><a href="/rankings">Bảng Xếp Hạng</a></li>
-                
+                <li><a href="/tournaments">EVENTS</a></li>
+                <li><a href="/rankings">WORLD NINEBALL RANKINGS</a></li>
+                <li><a href="#">PLAYERS</a></li>
+            </ul>
+        </nav>
+        <nav class="nav-right">
+            <ul>
                 <% if (typeof user !== 'undefined' && user) { %>
                     <% if (user.role === 'admin') { %>
-                        <li><a href="/admin" style="color: var(--neon-gold);">⚙️ Quản Trị Hệ Thống</a></li>
+                        <li><a href="/admin">⚙️ Admin</a></li>
                     <% } %>
-                    <li><a href="#" class="text-neon">Chào, <%= user.username %></a></li>
-                    <li><a href="/logout" class="btn-small">Đăng Xuất</a></li>
+                    <li><a href="#">👤 My Profile</a></li>
+                    <li><a href="#">❓ Support</a></li>
+                    <li><a href="/logout">🚪 Logout</a></li>
                 <% } else { %>
-                    <li><a href="/login" class="btn-small">Đăng Nhập</a></li>
-                    <li><a href="/register" class="btn-small btn-secondary">Đăng Ký</a></li>
+                    <li><a href="/login">👤 Login</a></li>
+                    <li><a href="/register">📝 Register</a></li>
                 <% } %>
-
-                <li><a href="#" class="btn-live">🔴 LIVE TRỰC TIẾP</a></li>
             </ul>
         </nav>
     </header>

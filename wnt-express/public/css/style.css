@@ -1,13 +1,13 @@
 :root {
-    --bg-dark: #0a0d14;
-    --bg-darker: #06080c;
-    --bg-card: #151a26;
-    --text-main: #ffffff;
-    --text-muted: #a0a5b1;
-    --neon-cyan: #00f0ff;
+    --bg-dark: #eef1f4; /* Light gray background */
+    --bg-darker: #ffffff; /* White for navbar/footer */
+    --bg-card: #ffffff; /* White for cards */
+    --text-main: #333333; /* Dark gray text */
+    --text-muted: #666666; /* Medium gray text */
+    --neon-cyan: #007bff; /* Blue instead of neon cyan for a cleaner look */
     --neon-gold: #ffb700;
     --live-red: #ff2e63;
-    --glass-bg: rgba(21, 26, 38, 0.7);
+    --glass-bg: rgba(255, 255, 255, 0.7);
 }
 
 * {
@@ -34,7 +34,7 @@ a {
     align-items: center;
     padding: 1rem 5%;
     background-color: var(--bg-darker);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -49,23 +49,22 @@ a {
     color: var(--neon-cyan);
 }
 
-nav ul {
+.nav-center ul, .nav-right ul {
     display: flex;
     list-style: none;
-    gap: 1rem;
+    gap: 1.5rem;
     align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-end;
 }
 
-nav ul li a {
+.nav-center ul li a, .nav-right ul li a {
     font-weight: 600;
     font-size: 0.85rem;
     white-space: nowrap;
     transition: color 0.3s;
+    color: #3a4a5e; /* Navy blue like the image */
 }
 
-nav ul li a:hover {
+.nav-center ul li a:hover, .nav-right ul li a:hover {
     color: var(--neon-cyan);
 }
 

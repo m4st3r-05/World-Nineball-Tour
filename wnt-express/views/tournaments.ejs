@@ -1,28 +1,37 @@
 <%- include('partials/header') %>
 
-<section class="page-header">
-    <h1>LỊCH TRÌNH GIẢI ĐẤU (WNT CALENDAR)</h1>
-    <p>Các giải Major, Ranking và Invitational năm 2026</p>
+<section class="banner-section" style="margin-top: 20px;">
+    <div class="container">
+        <div class="banner-box" style="background: url('/img/wnt-banner.jpg') center/cover; height: 120px; border-radius: 8px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; padding: 0 40px;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,13,20,0.8) 0%, rgba(10,13,20,0.3) 100%); z-index: 1;"></div>
+            <div style="position: relative; z-index: 2; display: flex; align-items: center; width: 100%; justify-content: space-between;">
+                <h2 style="font-size: 2rem; font-style: italic; font-weight: 900; color: #fff; text-transform: uppercase;">LIVE ACTION AT <span style="font-size: 2.5rem;">wnt<span style="color: red;">.</span>tv</span></h2>
+                <a href="#" style="background: #ff2e63; color: white; padding: 10px 20px; font-weight: bold; font-style: italic; border-radius: 4px; text-decoration: none; text-transform: uppercase;">WATCH NOW</a>
+            </div>
+        </div>
+    </div>
 </section>
 
 <section class="container mt-5 mb-5">
-    <div class="filter-bar">
-        <button class="btn btn-filter active">Tất cả</button>
-        <button class="btn btn-filter">Major Events</button>
-        <button class="btn btn-filter">Ranking Events</button>
-    </div>
-
-    <div class="list tournaments-list">
+    <div class="grid tournaments-grid">
         <% tournaments.forEach(t => { %>
-            <div class="list-item tournament-list-item">
-                <div class="t-date"><%= t.date %></div>
-                <div class="t-info">
-                    <h3><%= t.name %></h3>
-                    <span class="t-location">📍 <%= t.location %></span>
+            <div class="event-card">
+                <div class="event-card-img-wrap" style="background-image: url('<%= t.image || 'https://via.placeholder.com/400x300/333/fff?text=Waiting+for+image' %>');">
+                    <div class="event-card-content">
+                        <h3 class="event-title"><%= t.name %></h3>
+                        <p class="event-location"><%= t.location %></p>
+                    </div>
                 </div>
-                <div class="t-prize"><%= t.prize %></div>
-                <div class="t-type <%= t.type === 'Major' ? 'text-gold' : 'text-cyan' %>"><%= t.type %></div>
-                <div class="t-action"><button class="btn btn-outline">CHI TIẾT</button></div>
+                <div class="event-card-bottom">
+                    <div class="event-date">📅 <%= t.date %></div>
+                    <% if(t.type === 'Major') { %>
+                        <span class="event-badge badge-major" style="position: static; margin-bottom: 0;">Major Event</span>
+                    <% } else if(t.type === 'Ranking') { %>
+                        <span class="event-badge badge-ranking" style="position: static; margin-bottom: 0;">Ranking Event</span>
+                    <% } else { %>
+                        <span class="event-badge badge-invitational" style="position: static; margin-bottom: 0;"><%= t.type %> Event</span>
+                    <% } %>
+                </div>
             </div>
         <% }) %>
     </div>
