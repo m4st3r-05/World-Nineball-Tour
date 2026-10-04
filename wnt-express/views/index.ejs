@@ -16,7 +16,7 @@
     <div class="grid tournaments-grid">
         <% tournaments.forEach(t => { %>
             <div class="event-card">
-                <div class="event-card-img-wrap" style="background-image: url('<%= t.image || 'https://via.placeholder.com/400x300/333/fff?text=Waiting+for+image' %>');">
+                <div class="event-card-img-wrap" style="background-image: url('<%= t.image || 'https://via.placeholder.com/400x300/333/fff?text=Waiting+for+image' %>')">
                     <div class="event-card-content">
                         <h3 class="event-title"><%= t.name %></h3>
                         <p class="event-location"><%= t.location %></p>

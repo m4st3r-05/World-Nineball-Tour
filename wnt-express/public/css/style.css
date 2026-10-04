@@ -510,6 +510,13 @@ a {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    cursor: pointer;
+}
+
+.event-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
 }
 
 .event-card-img-wrap {
@@ -521,6 +528,11 @@ a {
     flex-direction: column;
     justify-content: flex-end;
     padding: 20px;
+    transition: transform 0.45s ease;
+}
+
+.event-card:hover .event-card-img-wrap {
+    transform: scale(1.08);
 }
 
 .event-card-img-wrap::before {
