@@ -42,9 +42,9 @@
     </div>
 
     <!-- Quản lý Cơ thủ -->
-    <div class="card">
+    <div class="card mb-5">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-            <h2>🧑‍🤝‍🧑 Quản Lý Cơ Thủ (Players)</h2>
+            <h2>🧑‍🤝‍🧑 Quản Lý 32 Người Chơi (Top WNT Players)</h2>
             <button class="btn btn-primary">+ THÊM CƠ THỦ</button>
         </div>
         
@@ -73,6 +73,30 @@
                 <% }) %>
             </tbody>
         </table>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; margin-bottom: 1.5rem;">
+            <h2>📊 Cập Nhật Tỷ Số Trận Đấu</h2>
+            <span class="text-gold">Admin-only</span>
+        </div>
+
+        <div style="display: grid; gap: 1rem;">
+            <% tournamentMatches.slice(0, 6).forEach(match => { %>
+                <form method="POST" action="/admin/matches/<%= match.id %>/score" style="display: grid; grid-template-columns: 1.5fr 90px 90px 1.5fr auto auto; gap: 0.75rem; align-items: center; background: rgba(255,255,255,0.03); padding: 0.75rem 1rem; border-radius: 8px;">
+                    <div><strong><%= match.p1_name %></strong></div>
+                    <input type="number" name="score1" value="<%= match.score1 %>" min="0" max="9" style="width: 100%; padding: 0.5rem; border-radius: 6px; border: none; background: rgba(255,255,255,0.08); color: #fff;">
+                    <span style="text-align: center; color: var(--neon-gold); font-weight: 800;">VS</span>
+                    <input type="number" name="score2" value="<%= match.score2 %>" min="0" max="9" style="width: 100%; padding: 0.5rem; border-radius: 6px; border: none; background: rgba(255,255,255,0.08); color: #fff;">
+                    <div><strong><%= match.p2_name %></strong></div>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; color: var(--live-red); font-weight: 700;">
+                        <input type="checkbox" name="is_live" <%= match.is_live ? 'checked' : '' %>>
+                        Live
+                    </label>
+                    <button type="submit" class="btn btn-small" style="background-color: var(--neon-gold); color: #000;">Lưu</button>
+                </form>
+            <% }) %>
+        </div>
     </div>
 
 </section>
