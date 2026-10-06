@@ -87,7 +87,7 @@
         <span class="td-live-dot"></span>
         Live
     </a>
-    <a href="#" class="td-tab" id="tab-ranking">
+    <a href="#ranking-section" class="td-tab" id="tab-ranking">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         Ranking
     </a>
@@ -161,39 +161,93 @@
     <% } %>
 </section>
 
+<section id="ranking-section" class="td-ranking-wrap" style="display: none;">
+    <div class="td-ranking-header">
+        <div class="td-ranking-title">Top 4 prize ranking</div>
+        <div class="td-ranking-meta"><%= tournament.shortName || tournament.short_name || tournament.name %></div>
+    </div>
+    <%
+      const rankingPlayers = Array.isArray(tournament.participants)
+        ? tournament.participants.slice().sort(function(a, b) { return Number(a.rank || 0) - Number(b.rank || 0); }).slice(0, 4)
+        : [];
+      const rankingPayouts = Array.isArray(tournament.prizeBreakdown) ? tournament.prizeBreakdown : [];
+      const getPayout = function(position) {
+        const prize = rankingPayouts.find(function(item) {
+          return String(item.position || '').toLowerCase() === position;
+        });
+        return prize ? prize.amount : '—';
+      };
+      const semiFinalistPayout = getPayout('semi-finalists');
+    %>
+    <% if (rankingPlayers.length) { %>
+        <% rankingPlayers.forEach(function(player, index) { %>
+            <div class="td-ranking-row <%= index === 0 ? 'td-ranking-row-first' : '' %>">
+                <div class="td-ranking-place">#<%= index + 1 %></div>
+                <div class="td-ranking-flag"><%= player.flag || '' %></div>
+                <div class="td-ranking-player">
+                    <div class="td-ranking-name"><%= player.name %></div>
+                    <div class="td-ranking-country"><%= player.country || '' %></div>
+                </div>
+                <div class="td-ranking-prize"><%= index === 0 ? getPayout('champion') : index === 1 ? getPayout('runner-up') : semiFinalistPayout %></div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <div class="td-ranking-empty">No ranking data available.</div>
+    <% } %>
+</section>
+
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const infoTab = document.getElementById('tab-info');
     const matchesTab = document.getElementById('tab-matches');
     const liveTab = document.getElementById('tab-live');
+    const rankingTab = document.getElementById('tab-ranking');
     const infoWrap = document.querySelector('.td-wrapper');
     const matchWrap = document.getElementById('matches-section');
     const liveWrap = document.getElementById('live-section');
+    const rankingWrap = document.getElementById('ranking-section');
 
     function showInfo() {
       if (infoWrap) infoWrap.style.display = 'block';
       if (matchWrap) matchWrap.style.display = 'none';
       if (liveWrap) liveWrap.style.display = 'none';
+      if (rankingWrap) rankingWrap.style.display = 'none';
       if (infoTab) infoTab.classList.add('td-tab-active');
       if (matchesTab) matchesTab.classList.remove('td-tab-active');
       if (liveTab) liveTab.classList.remove('td-tab-active');
+      if (rankingTab) rankingTab.classList.remove('td-tab-active');
     }
 
     function showMatches() {
       if (infoWrap) infoWrap.style.display = 'none';
       if (matchWrap) matchWrap.style.display = 'block';
       if (liveWrap) liveWrap.style.display = 'none';
+      if (rankingWrap) rankingWrap.style.display = 'none';
       if (matchesTab) matchesTab.classList.add('td-tab-active');
       if (infoTab) infoTab.classList.remove('td-tab-active');
       if (liveTab) liveTab.classList.remove('td-tab-active');
+      if (rankingTab) rankingTab.classList.remove('td-tab-active');
     }
 
     function showLive() {
       if (infoWrap) infoWrap.style.display = 'none';
       if (matchWrap) matchWrap.style.display = 'none';
       if (liveWrap) liveWrap.style.display = 'block';
+      if (rankingWrap) rankingWrap.style.display = 'none';
       if (liveTab) liveTab.classList.add('td-tab-active');
       if (matchesTab) matchesTab.classList.remove('td-tab-active');
+      if (infoTab) infoTab.classList.remove('td-tab-active');
+      if (rankingTab) rankingTab.classList.remove('td-tab-active');
+    }
+
+    function showRanking() {
+      if (infoWrap) infoWrap.style.display = 'none';
+      if (matchWrap) matchWrap.style.display = 'none';
+      if (liveWrap) liveWrap.style.display = 'none';
+      if (rankingWrap) rankingWrap.style.display = 'block';
+      if (rankingTab) rankingTab.classList.add('td-tab-active');
+      if (matchesTab) matchesTab.classList.remove('td-tab-active');
+      if (liveTab) liveTab.classList.remove('td-tab-active');
       if (infoTab) infoTab.classList.remove('td-tab-active');
     }
 
@@ -215,6 +269,13 @@
       liveTab.addEventListener('click', function (event) {
         event.preventDefault();
         showLive();
+      });
+    }
+
+    if (rankingTab) {
+      rankingTab.addEventListener('click', function (event) {
+        event.preventDefault();
+        showRanking();
       });
     }
 
@@ -645,6 +706,115 @@ main { padding-bottom: 0 !important; }
     font-weight: 700;
 }
 
+.td-ranking-wrap {
+    max-width: 980px;
+    margin: 0 auto 120px auto;
+    padding: 24px 0 40px;
+    position: relative;
+    z-index: 5;
+}
+
+.td-ranking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    background: #0a1628;
+    color: #fff;
+    padding: 18px 22px;
+    border-radius: 10px 10px 0 0;
+    text-transform: uppercase;
+}
+
+.td-ranking-title {
+    font-size: 1rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.td-ranking-meta {
+    color: #d4bd67;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-align: right;
+}
+
+.td-ranking-row {
+    display: grid;
+    grid-template-columns: 64px 56px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    min-height: 104px;
+    padding: 18px 24px;
+    background: #fff;
+    border-bottom: 1px solid #e8ebf0;
+    color: #17233b;
+}
+
+.td-ranking-row:nth-child(odd) {
+    background: #f4f5f7;
+}
+
+.td-ranking-row-first {
+    min-height: 150px;
+    background: #17233b !important;
+    border: 4px solid #c7b45c;
+    border-radius: 0 0 12px 12px;
+    color: #fff;
+}
+
+.td-ranking-place {
+    font-size: 1.1rem;
+    font-weight: 900;
+}
+
+.td-ranking-row-first .td-ranking-place,
+.td-ranking-row-first .td-ranking-name,
+.td-ranking-row-first .td-ranking-prize {
+    color: #d4bd67;
+}
+
+.td-ranking-flag {
+    font-size: 1.8rem;
+    text-align: center;
+}
+
+.td-ranking-name {
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.td-ranking-country {
+    margin-top: 5px;
+    color: #7586a4;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.td-ranking-row-first .td-ranking-country {
+    color: #d4bd67;
+}
+
+.td-ranking-prize {
+    color: #7185a6;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.td-ranking-empty {
+    padding: 28px 18px;
+    background: #fff;
+    color: #7586a4;
+    text-align: center;
+    font-weight: 700;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .td-meta-grid {
@@ -673,7 +843,21 @@ main { padding-bottom: 0 !important; }
     }
     .td-live-player-right { justify-content: flex-start; text-align: left; }
     .td-live-time { text-align: left; }
+    .td-ranking-wrap { margin: 0 10px 120px; }
+    .td-ranking-row {
+        grid-template-columns: 40px 36px minmax(0, 1fr);
+        gap: 10px;
+        padding: 16px 12px;
+    }
+    .td-ranking-prize {
+        grid-column: 3;
+        font-size: 1rem;
+    }
+    .td-ranking-header { align-items: flex-start; flex-direction: column; }
+    .td-ranking-meta { text-align: left; }
 }
 </style>
+
+
 
 <%- include('partials/footer') %>
