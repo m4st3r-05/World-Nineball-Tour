@@ -202,6 +202,14 @@ app.get('/rankings', async (req, res) => {
     res.render('rankings', { title: 'Bảng Xếp Hạng', players });
 });
 
+app.get('/players', async (req, res) => {
+    const players = (await getPlayers())
+        .slice()
+        .sort((a, b) => Number(a.rank || 0) - Number(b.rank || 0))
+        .slice(0, 32);
+    res.render('players', { title: 'Players', players });
+});
+
 app.get('/admin', isAdmin, async (req, res) => {
     const tournaments = await getTournaments();
     const players = await getPlayers();

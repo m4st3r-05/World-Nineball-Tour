@@ -605,6 +605,121 @@ a {
     letter-spacing: 0.08em;
 }
 
+/* Players directory */
+.players-hero {
+    height: clamp(300px, 32vw, 440px);
+    background:
+        linear-gradient(180deg, rgba(9, 18, 36, 0.02) 40%, rgba(9, 18, 36, 0.2) 100%),
+        url('/img/wnt-players-banner.jpg') center 46% / cover no-repeat;
+}
+
+.players-directory {
+    width: min(1380px, calc(100% - 48px));
+    margin: -145px auto 90px;
+    position: relative;
+    z-index: 2;
+}
+
+.players-panel {
+    position: relative;
+    padding: 76px 30px 36px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 38px rgba(17, 29, 49, 0.16);
+}
+
+.players-panel-title {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    min-width: min(48%, 460px);
+    padding: 13px 28px;
+    border-radius: 0 0 14px 14px;
+    background: #17233b;
+    color: #fff;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 900;
+    text-align: center;
+    transform: translateX(-50%);
+}
+
+.players-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 28px;
+}
+
+.player-directory-card {
+    display: flex;
+    min-width: 0;
+    min-height: 118px;
+    align-items: center;
+    gap: 18px;
+    padding: 14px 10px;
+}
+
+.player-directory-photo-wrap,
+.player-directory-placeholder {
+    display: grid;
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: #e8ebef;
+}
+
+.player-directory-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 22%;
+}
+
+.player-directory-placeholder {
+    color: #7c8ba4;
+    font-size: 2rem;
+}
+
+.player-directory-info {
+    min-width: 0;
+}
+
+.player-directory-info h2 {
+    color: #17233b;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.player-directory-info p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    color: #7b8ba6;
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.player-directory-info p span {
+    font-size: 1rem;
+}
+
+.player-directory-rank {
+    display: inline-block;
+    margin-top: 7px;
+    color: #a18d45;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
 .r-points {
     color: var(--neon-gold);
     font-weight: bold;
@@ -622,6 +737,53 @@ a {
 }
 
 @media (max-width: 768px) {
+    .players-hero {
+        height: 280px;
+        background-position: center;
+    }
+
+    .players-directory {
+        width: calc(100% - 20px);
+        margin-top: -72px;
+    }
+
+    .players-panel {
+        padding: 68px 14px 24px;
+        border-radius: 12px;
+    }
+
+    .players-panel-title {
+        min-width: 68%;
+        font-size: 0.9rem;
+    }
+
+    .players-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 8px;
+    }
+
+    .player-directory-card {
+        min-height: 96px;
+        gap: 10px;
+        padding: 10px 4px;
+    }
+
+    .player-directory-photo-wrap,
+    .player-directory-placeholder {
+        width: 52px;
+        height: 52px;
+        flex-basis: 52px;
+    }
+
+    .player-directory-info h2 {
+        font-size: 0.82rem;
+    }
+
+    .player-directory-info p {
+        gap: 5px;
+        font-size: 0.64rem;
+    }
+
     .rankings-hero {
         height: 280px;
         background-position: center;

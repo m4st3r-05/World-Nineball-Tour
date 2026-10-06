@@ -29,7 +29,9 @@ const playerPortraits = new Map([
     [27, "/img/world-ranking-player-27.jpg"],
     [28, "/img/world-ranking-player-28.jpg"],
     [29, "/img/world-ranking-player-29.jpg"],
-    [30, "/img/world-ranking-player-30.jpg"]
+    [30, "/img/world-ranking-player-30.jpg"],
+    [31, "/img/world-ranking-player-31.jpg"],
+    [32, "/img/world-ranking-player-32.jpg"]
 ]);
 
 const top32Players = [

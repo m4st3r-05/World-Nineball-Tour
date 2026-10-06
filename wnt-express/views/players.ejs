@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+<section class="players-hero" aria-label="WNT players banner"></section>
+
+<section class="players-directory">
+    <div class="players-panel">
+        <h1 class="players-panel-title">WNT PLAYERS</h1>
+        <div class="players-grid">
+            <% players.forEach(function(player, index) { %>
+                <article class="player-directory-card">
+                    <div class="player-directory-photo-wrap">
+                        <% if (player.portrait) { %>
+                            <img class="player-directory-photo" src="<%= player.portrait %>" alt="<%= player.name %>" loading="lazy">
+                        <% } else { %>
+                            <span class="player-directory-placeholder" aria-hidden="true"><%= player.flag || '●' %></span>
+                        <% } %>
+                    </div>
+                    <div class="player-directory-info">
+                        <h2><%= player.name %></h2>
+                        <p><span aria-hidden="true"><%= player.flag || '' %></span><%= player.country || '—' %></p>
+                        <span class="player-directory-rank">RANK #<%= player.rank || index + 1 %></span>
+                    </div>
+                </article>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>
