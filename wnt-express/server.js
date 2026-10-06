@@ -57,6 +57,15 @@ app.get('/tournaments', (req, res) => {
     });
 });
 
+app.get('/tournaments/:id', (req, res) => {
+    const tournament = mockData.tournaments.find(t => t.id === parseInt(req.params.id));
+    if (!tournament) return res.status(404).send('<h1>404 - Không tìm thấy giải đấu</h1>');
+    res.render('tournament-detail', {
+        title: tournament.name,
+        tournament
+    });
+});
+
 app.get('/rankings', (req, res) => {
     res.render('rankings', { 
         title: 'Bảng Xếp Hạng',

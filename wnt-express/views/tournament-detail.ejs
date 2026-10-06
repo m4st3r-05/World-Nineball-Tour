@@ -1,0 +1,280 @@
+<%- include('partials/header') %>
+
+<!-- HERO BANNER -->
+<div class="td-hero" style="background-image: url('<%= tournament.heroImage %>');">  
+    <div class="td-hero-overlay"></div>
+</div>
+
+<!-- MAIN CONTENT WRAPPER -->
+<div class="td-wrapper">
+
+    <!-- EVENT INFO HEADER BADGE -->
+    <div class="td-info-badge-wrap">
+        <div class="td-info-badge">
+            EVENT INFO
+        </div>
+    </div>
+
+    <!-- TOURNAMENT TITLE -->
+    <div class="td-title-block">
+        <h1 class="td-title">
+            <span class="td-title-gold"><%= tournament.shortName %></span>
+            <span class="td-title-blue"><%= tournament.subtitle %></span>
+        </h1>
+        <div class="td-title-divider"></div>
+    </div>
+
+    <!-- EVENT META (Date / Venue / Location / Prize fund) -->
+    <div class="td-meta-grid">
+        <div class="td-meta-item">
+            <div class="td-meta-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                Date
+            </div>
+            <div class="td-meta-value"><%= tournament.dateRange %></div>
+        </div>
+        <div class="td-meta-item">
+            <div class="td-meta-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Venue
+            </div>
+            <div class="td-meta-value"><%= tournament.venue %></div>
+        </div>
+        <div class="td-meta-item">
+            <div class="td-meta-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                Location
+            </div>
+            <div class="td-meta-value"><%= tournament.location.split(',')[0] %></div>
+        </div>
+        <div class="td-meta-item">
+            <div class="td-meta-label">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Prize fund
+            </div>
+            <div class="td-meta-value"><%= tournament.prize %></div>
+        </div>
+    </div>
+
+    <!-- PRIZE BREAKDOWN -->
+    <div class="td-prize-block">
+        <div class="td-prize-grid">
+            <% tournament.prizeBreakdown.forEach(function(p) { %>
+            <div class="td-prize-item">
+                <div class="td-prize-pos"><%= p.position %></div>
+                <div class="td-prize-amt"><%= p.amount %></div>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+
+</div>
+
+<!-- BOTTOM TAB BAR -->
+<div class="td-tabbar">
+    <a href="/tournaments/<%= tournament.id %>" class="td-tab td-tab-active" id="tab-info">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+        Info
+    </a>
+    <a href="#" class="td-tab" id="tab-matches">
+        <span style="font-weight:900; font-size:0.7rem;">VS.</span>
+        Matches
+    </a>
+    <a href="#" class="td-tab" id="tab-live">
+        <span class="td-live-dot"></span>
+        Live
+    </a>
+    <a href="#" class="td-tab" id="tab-br">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        B &amp; R
+    </a>
+    <a href="#" class="td-tab" id="tab-ranking">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Ranking
+    </a>
+</div>
+
+<style>
+/* =================== TOURNAMENT DETAIL STYLES =================== */
+main { padding-bottom: 0 !important; }
+
+.td-hero {
+    width: 100%;
+    height: 280px;
+    background-size: cover;
+    background-position: center top;
+    position: relative;
+}
+.td-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,13,30,0.25) 0%, rgba(10,13,30,0.55) 100%);
+}
+
+/* WRAPPER */
+.td-wrapper {
+    background: #fff;
+    max-width: 980px;
+    margin: -40px auto 120px auto;
+    border-radius: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    padding: 0 0 30px 0;
+    position: relative;
+    z-index: 10;
+}
+
+/* EVENT INFO BADGE */
+.td-info-badge-wrap {
+    display: flex;
+    justify-content: center;
+    margin-top: -20px;
+}
+.td-info-badge {
+    background: #0a1628;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 11px 50px;
+    border-radius: 8px;
+}
+
+/* TITLE */
+.td-title-block {
+    text-align: center;
+    padding: 28px 20px 0 20px;
+}
+.td-title {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 10px;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 1px;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+}
+.td-title-gold { color: #c9a227; }
+.td-title-blue { color: #1a2d5a; }
+.td-title-divider {
+    height: 2px;
+    width: 80px;
+    background: #c9a227;
+    margin: 0 auto 20px auto;
+    border-radius: 2px;
+}
+
+/* META GRID */
+.td-meta-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 16px 40px 24px 40px;
+    border-bottom: 1px solid #eee;
+}
+.td-meta-item {
+    padding: 8px 16px;
+    border-right: 1px solid #eee;
+}
+.td-meta-item:first-child { padding-left: 0; }
+.td-meta-item:last-child { border-right: none; }
+.td-meta-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #5a7fa8;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 5px;
+}
+.td-meta-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1a2d5a;
+}
+
+/* PRIZE BREAKDOWN */
+.td-prize-block {
+    margin: 0 30px;
+    background: #0a1628;
+    border-radius: 10px;
+    padding: 24px 30px;
+}
+.td-prize-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px 16px;
+}
+.td-prize-pos {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #5a9fd4;
+    margin-bottom: 4px;
+}
+.td-prize-amt {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: #fff;
+    font-style: italic;
+}
+
+/* BOTTOM TAB BAR */
+.td-tabbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border-top: 1px solid #dde3ec;
+    display: flex;
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.10);
+}
+.td-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 12px 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #8a9ab5;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+}
+.td-tab:hover { color: #1a2d5a; }
+.td-tab-active {
+    background: #0a1628;
+    color: #fff !important;
+}
+.td-live-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    display: inline-block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .td-meta-grid {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 16px 20px;
+        gap: 12px;
+    }
+    .td-meta-item { border-right: none; padding: 8px 0; }
+    .td-prize-grid { grid-template-columns: repeat(2, 1fr); }
+    .td-title { font-size: 1.5rem; }
+    .td-hero { height: 180px; }
+    .td-wrapper { margin: -20px 10px 120px 10px; }
+    .td-prize-block { margin: 0 12px; }
+}
+</style>
+
+<%- include('partials/footer') %>

@@ -1,16 +1,35 @@
-module.exports = {
+﻿// Mutable in-memory data store
+const data = {
     tournaments: [
-        { id: 1, name: "World Pool Championship 2026", date: "01 - 06 June 2026", location: "Jeddah, Saudi Arabia", prize: "$1,000,000", type: "Ranking", status: "Upcoming", image: "/img/world-pool-championship.jpg" },
-        { id: 2, name: "US Open Pool Championship", date: "19 - 24 August 2026", location: "Atlantic City, USA", prize: "$300,000", type: "Major", status: "Upcoming", image: "/img/us-open-pool-championship.jpg" },
-        { id: 3, name: "European Open Pool Championship", date: "06 - 11 August 2026", location: "Fulda, Germany", prize: "$200,000", type: "Major", status: "Finished", image: "/img/european-open-pool-championship.jpg" },
-        { id: 4, name: "Hanoi Open Pool Championship", date: "08 - 13 October 2026", location: "Hanoi, Vietnam", prize: "$200,000", type: "Major", status: "Upcoming", image: "/img/hanoi-open-pool-championship.jpg" }
+        {
+            id: 1,
+            name: "World Pool Championship 2026",
+            shortName: "WORLD POOL",
+            subtitle: "CHAMPIONSHIP",
+            date: "01 - 06 June 2026",
+            dateRange: "Jun 01 - 06, 2026",
+            venue: "Green Halls",
+            location: "Jeddah, Saudi Arabia",
+            prize: "$1,000,000",
+            type: "Ranking",
+            status: "Upcoming",
+            image: "/img/world-pool-championship.jpg",
+            heroImage: "/img/world-pool-championship.jpg",
+            raceTarget: 9,
+            prizeBreakdown: [
+                { position: "Champion",       amount: "$250,000" },
+                { position: "Runner-up",      amount: "$100,000" },
+                { position: "Semi-finalists", amount: "$50,000" },
+                { position: "5th-8th",        amount: "$25,000" },
+                { position: "9th-16th",       amount: "$15,000" },
+                { position: "17th-32nd",      amount: "$7,000" },
+                { position: "33rd-64th",      amount: "$3,500" },
+                { position: "65th-96th",      amount: "$2,000" },
+                { position: "97th-128th",     amount: "$1,000" }
+            ],
+            matches: []
+        }
     ],
-    players: [
-        { rank: 1, name: "Fedor Gorst", country: "USA", points: "45,500", img: "https://ui-avatars.com/api/?name=Fedor+Gorst&background=random" },
-        { rank: 2, name: "Francisco Sanchez Ruiz", country: "ESP", points: "42,300", img: "https://ui-avatars.com/api/?name=Francisco+Sanchez+Ruiz&background=random" },
-        { rank: 3, name: "Shane Van Boening", country: "USA", points: "38,900", img: "https://ui-avatars.com/api/?name=Shane+Van+Boening&background=random" },
-        { rank: 4, name: "Jayson Shaw", country: "GBR", points: "36,200", img: "https://ui-avatars.com/api/?name=Jayson+Shaw&background=random" },
-        { rank: 5, name: "Joshua Filler", country: "GER", points: "35,100", img: "https://ui-avatars.com/api/?name=Joshua+Filler&background=random" },
-        { rank: 35, name: "Duong Quoc Hoang", country: "VIE", points: "12,400", img: "https://ui-avatars.com/api/?name=Duong+Quoc+Hoang&background=random" }
-    ]
+    players: []
 };
+module.exports = data;

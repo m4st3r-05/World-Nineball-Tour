@@ -15,6 +15,7 @@
 <section class="container mt-5 mb-5">
     <div class="grid tournaments-grid">
         <% tournaments.forEach(t => { %>
+            <a href="/tournaments/<%= t.id %>" style="text-decoration:none; color:inherit; display:block;">
             <div class="event-card">
                 <div class="event-card-img-wrap" style="background-image: url('<%= t.image || 'https://via.placeholder.com/400x300/333/fff?text=Waiting+for+image' %>');">
                     <div class="event-card-content">
@@ -33,6 +34,7 @@
                     <% } %>
                 </div>
             </div>
+            </a>
         <% }) %>
     </div>
 </section>
