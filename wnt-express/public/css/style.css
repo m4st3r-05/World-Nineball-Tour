@@ -539,6 +539,14 @@ a {
     font-size: 1.8rem;
 }
 
+.rankings-portrait {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 22%;
+}
+
 .rankings-row-first .rankings-flag {
     background: rgba(255, 255, 255, 0.1);
 }
@@ -661,6 +669,11 @@ a {
         width: 40px;
         height: 40px;
         font-size: 1.35rem;
+    }
+
+    .rankings-portrait {
+        width: 44px;
+        height: 44px;
     }
 
     .rankings-player-name {

@@ -57,10 +57,19 @@ function normalizeTournament(row = {}) {
     };
 }
 
+function normalizePlayer(row = {}) {
+    const fallback = fallbackData.players.find((player) => player.id === Number(row.id)) || {};
+    return {
+        ...fallback,
+        ...row,
+        portrait: row.portrait || fallback.portrait || null
+    };
+}
+
 async function getPlayers() {
     try {
         const [rows] = await pool.query('SELECT * FROM players ORDER BY rank ASC');
-        return rows.length ? rows : fallbackData.players;
+        return rows.length ? rows.map(normalizePlayer) : fallbackData.players;
     } catch (error) {
         return fallbackData.players;
     }
@@ -90,13 +99,15 @@ function groupMatchesByRound(matches, raceTarget = 9) {
                 id: match.player1_id,
                 name: match.p1_name,
                 country: match.p1_country,
-                rank: match.p1_rank || 0
+                rank: match.p1_rank || 0,
+                portrait: normalizePlayer({ id: match.player1_id }).portrait
             },
             player2: {
                 id: match.player2_id,
                 name: match.p2_name,
                 country: match.p2_country,
-                rank: match.p2_rank || 0
+                rank: match.p2_rank || 0,
+                portrait: normalizePlayer({ id: match.player2_id }).portrait
             },
             score1: Number(match.score1 || 0),
             score2: Number(match.score2 || 0),

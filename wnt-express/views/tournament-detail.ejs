@@ -183,7 +183,11 @@
         <% rankingPlayers.forEach(function(player, index) { %>
             <div class="td-ranking-row <%= index === 0 ? 'td-ranking-row-first' : '' %>">
                 <div class="td-ranking-place">#<%= index + 1 %></div>
-                <div class="td-ranking-flag"><%= player.flag || '' %></div>
+                <% if (player.portrait) { %>
+                    <img class="td-ranking-portrait" src="<%= player.portrait %>" alt="<%= player.name %>">
+                <% } else { %>
+                    <div class="td-ranking-flag"><%= player.flag || '' %></div>
+                <% } %>
                 <div class="td-ranking-player">
                     <div class="td-ranking-name"><%= player.name %></div>
                     <div class="td-ranking-country"><%= player.country || '' %></div>
@@ -779,6 +783,14 @@ main { padding-bottom: 0 !important; }
     text-align: center;
 }
 
+.td-ranking-portrait {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 22%;
+}
+
 .td-ranking-name {
     font-size: 1.15rem;
     font-style: italic;
@@ -848,6 +860,10 @@ main { padding-bottom: 0 !important; }
         grid-template-columns: 40px 36px minmax(0, 1fr);
         gap: 10px;
         padding: 16px 12px;
+    }
+    .td-ranking-portrait {
+        width: 44px;
+        height: 44px;
     }
     .td-ranking-prize {
         grid-column: 3;

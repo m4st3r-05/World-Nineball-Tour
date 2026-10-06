@@ -1,4 +1,27 @@
 ﻿// Mutable in-memory data store
+const playerPortraits = new Map([
+    [1, "/img/world-ranking-player-01.jpg"],
+    [2, "/img/world-ranking-player-02.jpg"],
+    [3, "/img/world-ranking-player-03.jpg"],
+    [4, "/img/world-ranking-player-04.jpg"],
+    [5, "/img/world-ranking-player-05.jpg"],
+    [6, "/img/world-ranking-player-06.jpg"],
+    [7, "/img/world-ranking-player-07.jpg"],
+    [8, "/img/world-ranking-player-08.jpg"],
+    [9, "/img/world-ranking-player-09.jpg"],
+    [10, "/img/world-ranking-player-10.jpg"],
+    [11, "/img/world-ranking-player-11.jpg"],
+    [12, "/img/world-ranking-player-12.jpg"],
+    [13, "/img/world-ranking-player-13.jpg"],
+    [14, "/img/world-ranking-player-14.jpg"],
+    [15, "/img/world-ranking-player-15.jpg"],
+    [16, "/img/world-ranking-player-16.jpg"],
+    [17, "/img/world-ranking-player-17.jpg"],
+    [18, "/img/world-ranking-player-18.jpg"],
+    [19, "/img/world-ranking-player-19.jpg"],
+    [20, "/img/world-ranking-player-20.jpg"]
+]);
+
 const top32Players = [
     { id: 1, name: "Dương Quốc Hoàng", country: "VIE", flag: "🇻🇳", rank: 1, points: 1700 },
     { id: 2, name: "Fedor Gorst", country: "USA", flag: "🇺🇸", rank: 2, points: 1650 },
@@ -32,7 +55,10 @@ const top32Players = [
     { id: 30, name: "John Morra", country: "CAN", flag: "🇨🇦", rank: 30, points: 830 },
     { id: 31, name: "Chris Melling", country: "ENG", flag: "🇬🇧", rank: 31, points: 815 },
     { id: 32, name: "Harvey Ahlers", country: "USA", flag: "🇺🇸", rank: 32, points: 800 }
-];
+].map((player) => ({
+    ...player,
+    portrait: playerPortraits.get(player.id) || null
+}));
 
 function buildTournamentBracket(players, raceTo = 9) {
     const rounds = [];

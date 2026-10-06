@@ -17,7 +17,11 @@
             <% players.forEach(function(player, index) { %>
                 <li class="rankings-row <%= index === 0 ? 'rankings-row-first' : '' %>">
                     <span class="rankings-position">#<%= player.rank || index + 1 %></span>
-                    <span class="rankings-flag" aria-hidden="true"><%= player.flag || '●' %></span>
+                    <% if (player.portrait) { %>
+                        <img class="rankings-portrait" src="<%= player.portrait %>" alt="<%= player.name %>">
+                    <% } else { %>
+                        <span class="rankings-flag" aria-hidden="true"><%= player.flag || '●' %></span>
+                    <% } %>
                     <div class="rankings-player">
                         <span class="rankings-player-name"><%= player.name %></span>
                         <span class="rankings-country"><%= player.country || '—' %></span>
