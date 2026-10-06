@@ -423,46 +423,178 @@ a {
     color: #000;
 }
 
-/* Ranking Table */
-.ranking-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: var(--bg-card);
-    border-radius: 8px;
+/* World rankings */
+.rankings-hero {
+    height: clamp(280px, 31vw, 440px);
+    background:
+        linear-gradient(180deg, rgba(12, 20, 37, 0.02) 35%, rgba(12, 20, 37, 0.25) 100%),
+        url('/img/world-rankings-banner.jpg') center 48% / cover no-repeat;
+}
+
+.rankings-page {
+    width: min(1380px, calc(100% - 48px));
+    margin: -110px auto 90px;
+    position: relative;
+    z-index: 2;
+}
+
+.rankings-brand-tab {
+    width: fit-content;
+    margin-left: 34px;
+    padding: 12px 24px 5px;
+    border-radius: 14px 14px 0 0;
+    background: #fff;
+    color: #080b11;
+    font-size: 1.9rem;
+    font-style: italic;
+    font-weight: 900;
+    letter-spacing: -2px;
+}
+
+.rankings-brand-tab span {
+    color: #e3272f;
+}
+
+.rankings-panel {
     overflow: hidden;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 38px rgba(17, 29, 49, 0.16);
 }
 
-.ranking-table th {
-    background: rgba(0, 0, 0, 0.2);
-    padding: 1rem;
-    text-align: left;
-    color: var(--text-muted);
-}
-
-.ranking-table td {
-    padding: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    vertical-align: middle;
-}
-
-.r-name {
+.rankings-panel-heading {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    font-weight: bold;
-    font-size: 1.1rem;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 30px 18px;
+    border-bottom: 1px solid #e7eaf0;
 }
 
-.r-avatar {
-    width: 40px;
-    height: 40px;
+.rankings-panel-heading p {
+    color: #a18d45;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+}
+
+.rankings-panel-heading h1 {
+    margin-top: 4px;
+    color: #17233b;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.rankings-panel-heading > span {
+    color: #7c8ba4;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+.rankings-list {
+    list-style: none;
+}
+
+.rankings-row {
+    display: grid;
+    grid-template-columns: 58px 64px minmax(0, 1fr) minmax(120px, auto);
+    align-items: center;
+    gap: 16px;
+    min-height: 112px;
+    padding: 18px 28px;
+    border-bottom: 1px solid #edf0f4;
+    background: #fff;
+}
+
+.rankings-row:nth-child(even) {
+    background: #f7f8fa;
+}
+
+.rankings-row-first {
+    background: #17233b !important;
+    color: #fff;
+}
+
+.rankings-position {
+    color: #17233b;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 900;
+}
+
+.rankings-row-first .rankings-position {
+    color: #d5bd62;
+}
+
+.rankings-flag {
+    display: grid;
+    width: 54px;
+    height: 54px;
+    place-items: center;
     border-radius: 50%;
+    background: #eef1f5;
+    font-size: 1.8rem;
 }
 
-.r-rank {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--text-muted);
+.rankings-row-first .rankings-flag {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.rankings-player {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.rankings-player-name {
+    overflow: hidden;
+    color: #17233b;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.rankings-row-first .rankings-player-name {
+    color: #d5bd62;
+}
+
+.rankings-country {
+    color: #7b8ba6;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.rankings-row-first .rankings-country {
+    color: #c5d0e2;
+}
+
+.rankings-points {
+    color: #7c8fae;
+    font-size: 1.4rem;
+    font-style: italic;
+    font-weight: 900;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.rankings-row-first .rankings-points {
+    color: #d5bd62;
+}
+
+.rankings-points small {
+    margin-left: 7px;
+    font-size: 0.65rem;
+    font-style: normal;
+    letter-spacing: 0.08em;
 }
 
 .r-points {
@@ -482,6 +614,77 @@ a {
 }
 
 @media (max-width: 768px) {
+    .rankings-hero {
+        height: 280px;
+        background-position: center;
+    }
+
+    .rankings-page {
+        width: calc(100% - 20px);
+        margin-top: -64px;
+    }
+
+    .rankings-brand-tab {
+        margin-left: 16px;
+        padding: 8px 18px 4px;
+        font-size: 1.55rem;
+    }
+
+    .rankings-panel {
+        border-radius: 12px;
+    }
+
+    .rankings-panel-heading {
+        padding: 18px 16px 14px;
+    }
+
+    .rankings-panel-heading h1 {
+        font-size: 1.15rem;
+    }
+
+    .rankings-panel-heading > span {
+        font-size: 0.65rem;
+    }
+
+    .rankings-row {
+        grid-template-columns: 38px 44px minmax(0, 1fr) auto;
+        gap: 9px;
+        min-height: 86px;
+        padding: 14px 12px;
+    }
+
+    .rankings-position {
+        font-size: 1rem;
+    }
+
+    .rankings-flag {
+        width: 40px;
+        height: 40px;
+        font-size: 1.35rem;
+    }
+
+    .rankings-player-name {
+        font-size: 0.92rem;
+    }
+
+    .rankings-country {
+        font-size: 0.63rem;
+    }
+
+    .rankings-points {
+        font-size: 0.92rem;
+    }
+
+    .rankings-points small {
+        display: block;
+        margin: 3px 0 0;
+        font-size: 0.55rem;
+    }
+
+    .rankings-row-first {
+        border-radius: 0;
+    }
+
     .list-item {
         flex-direction: column;
         text-align: center;

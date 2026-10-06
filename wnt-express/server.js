@@ -184,7 +184,10 @@ app.get('/tournaments/:id', async (req, res) => {
 });
 
 app.get('/rankings', async (req, res) => {
-    const players = await getPlayers();
+    const players = (await getPlayers())
+        .slice()
+        .sort((a, b) => Number(a.rank || 0) - Number(b.rank || 0))
+        .slice(0, 32);
     res.render('rankings', { title: 'Bảng Xếp Hạng', players });
 });
 

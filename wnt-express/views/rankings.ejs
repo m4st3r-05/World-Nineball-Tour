@@ -1,36 +1,32 @@
 <%- include('partials/header') %>
 
-<section class="page-header">
-    <h1>BẢNG XẾP HẠNG THẾ GIỚI</h1>
-    <p>WNT Official World Rankings</p>
-</section>
+<section class="rankings-hero" aria-label="World Nineball Rankings banner"></section>
 
-<section class="container mt-5 mb-5">
-    <table class="ranking-table">
-        <thead>
-            <tr>
-                <th>Hạng</th>
-                <th>Cơ Thủ</th>
-                <th>Quốc Gia</th>
-                <th>Điểm Số</th>
-                <th>Chi Tiết</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% players.forEach(p => { %>
-                <tr>
-                    <td class="r-rank">#<%= p.rank %></td>
-                    <td class="r-name">
-                        <img src="<%= p.img %>" alt="<%= p.name %>" class="r-avatar">
-                        <%= p.name %>
-                    </td>
-                    <td class="r-country"><%= p.country %></td>
-                    <td class="r-points"><%= p.points %></td>
-                    <td><button class="btn btn-small">Hồ Sơ</button></td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
+<section class="rankings-page">
+    <div class="rankings-brand-tab">wnt<span>.</span></div>
+    <div class="rankings-panel">
+        <div class="rankings-panel-heading">
+            <div>
+                <p>WORLD NINEBALL TOUR</p>
+                <h1>World Rankings</h1>
+            </div>
+            <span><%= players.length %> PLAYERS</span>
+        </div>
+
+        <ol class="rankings-list">
+            <% players.forEach(function(player, index) { %>
+                <li class="rankings-row <%= index === 0 ? 'rankings-row-first' : '' %>">
+                    <span class="rankings-position">#<%= player.rank || index + 1 %></span>
+                    <span class="rankings-flag" aria-hidden="true"><%= player.flag || '●' %></span>
+                    <div class="rankings-player">
+                        <span class="rankings-player-name"><%= player.name %></span>
+                        <span class="rankings-country"><%= player.country || '—' %></span>
+                    </div>
+                    <span class="rankings-points"><%= Number(player.points || 0).toLocaleString('en-US') %><small>PTS</small></span>
+                </li>
+            <% }); %>
+        </ol>
+    </div>
 </section>
 
 <%- include('partials/footer') %>
