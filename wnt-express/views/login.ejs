@@ -1,32 +1,200 @@
 <%- include('partials/header') %>
 
-<section class="container mt-5 mb-5" style="min-height: 50vh; display: flex; align-items: center; justify-content: center;">
-    <div class="login-box card" style="max-width: 400px; width: 100%; text-align: center;">
-        <h2 style="margin-bottom: 2rem; color: var(--neon-cyan);">ĐĂNG NHẬP WNT</h2>
-        
-        <% if (error) { %>
-            <div style="background: rgba(255, 46, 99, 0.2); color: var(--live-red); padding: 10px; margin-bottom: 1rem; border-radius: 4px; border: 1px solid var(--live-red);">
-                <%= error %>
+<section class="auth-page">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-badge-wrap">
+                <div class="auth-badge">
+                    <span>Sign In</span>
+                </div>
             </div>
-        <% } %>
 
-        <form action="/login" method="POST" style="display: flex; flex-direction: column; gap: 1rem;">
-            <div style="text-align: left;">
-                <label for="username" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Tài khoản</label>
-                <input type="text" id="username" name="username" required 
-                       style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: white; outline: none;">
-            </div>
-            
-            <div style="text-align: left;">
-                <label for="password" style="display: block; margin-bottom: 5px; color: var(--text-muted);">Mật khẩu</label>
-                <input type="password" id="password" name="password" required 
-                       style="width: 100%; padding: 10px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); background: var(--bg-dark); color: white; outline: none;">
-            </div>
-            
-            <button type="submit" class="btn btn-primary" style="margin-top: 1rem; width: 100%;">Đăng Nhập</button>
-        </form>
-        
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="auth-alert auth-alert-error"><%= error %></div>
+            <% } %>
+
+            <form action="/login" method="POST" class="auth-form">
+                <div class="auth-field">
+                    <input type="text" id="username" name="username" placeholder="Username" required autofocus>
+                </div>
+                <div class="auth-field">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="auth-action">
+                    <button type="submit" class="btn-auth-submit">Sign In</button>
+                </div>
+            </form>
+        </div>
+
+        <p class="auth-note">
+            *Don't have an account yet? You can create one by <a href="/register"><strong>clicking here</strong></a>.
+        </p>
     </div>
 </section>
+
+<style>
+.auth-page {
+    background-color: #eef1f5;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 90px;
+    box-sizing: border-box;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 920px;
+}
+
+.auth-card {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid #e2e7ee;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding: 50px 45px 36px;
+    margin-bottom: 18px;
+}
+
+.auth-badge-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-badge {
+    background-color: #14243b;
+    color: #ffffff;
+    padding: 10px 58px;
+    border-radius: 0 0 16px 16px;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.auth-form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-field input {
+    width: 100%;
+    height: 54px;
+    background: #ffffff;
+    border: 1px solid #d4dae3;
+    border-radius: 9px;
+    padding: 0 20px;
+    font-size: 0.98rem;
+    font-family: inherit;
+    color: #1a2a3a;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.auth-field input::placeholder {
+    color: #8c9ba9;
+    font-weight: 400;
+}
+
+.auth-field input:focus {
+    border-color: #14243b;
+    box-shadow: 0 0 0 3px rgba(20, 36, 59, 0.08);
+}
+
+.auth-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.btn-auth-submit {
+    background-color: #1a7c52;
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 38px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(26, 124, 82, 0.25);
+}
+
+.btn-auth-submit:hover {
+    background-color: #219663;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(26, 124, 82, 0.35);
+}
+
+.btn-auth-submit:active {
+    transform: translateY(0);
+}
+
+.auth-note {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #3e4a59;
+    margin: 0;
+    padding-left: 4px;
+    line-height: 1.5;
+}
+
+.auth-note a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.auth-note strong {
+    font-weight: 800;
+    color: #14243b;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.auth-alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 10px 0 16px;
+}
+
+.auth-alert-error {
+    background: #fde8e8;
+    color: #c81e1e;
+    border: 1px solid #f8b4b4;
+}
+
+@media (max-width: 768px) {
+    .auth-card {
+        padding: 40px 20px 25px;
+    }
+    .auth-badge {
+        padding: 8px 30px;
+        font-size: 1.1rem;
+    }
+    .auth-field input {
+        height: 48px;
+    }
+    .auth-action {
+        justify-content: center;
+    }
+    .btn-auth-submit {
+        width: 100%;
+    }
+}
+</style>
 
 <%- include('partials/footer') %>
