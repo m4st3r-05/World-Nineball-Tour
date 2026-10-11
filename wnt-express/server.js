@@ -317,10 +317,11 @@ app.post('/login', async (req, res) => {
         }
 
         const user = rows[0];
-        const match = await bcrypt.compare(password, user.password);
+        // Hỗ trợ cả mật khẩu dạng thô (plain text không mã hóa) và mật khẩu cũ mã hóa bcrypt
+        const match = (user.password === password) || (await bcrypt.compare(password, user.password).catch(() => false));
 
         if (match) {
-            req.session.user = { username: user.username, role: user.role };
+            req.session.user = { id: user.id, username: user.username, role: user.role };
             return res.redirect('/');
         }
         return res.render('login', { title: 'Đăng Nhập', error: 'Sai tài khoản hoặc mật khẩu!' });
@@ -345,14 +346,92 @@ app.post('/register', async (req, res) => {
             return res.render('register', { title: 'Đăng Ký', error: 'Tên tài khoản đã tồn tại' });
         }
 
-        const hashed = await bcrypt.hash(password, 10);
-        await pool.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, hashed]);
+        // Lưu mật khẩu trực tiếp dạng chữ/số (không mã hóa) theo yêu cầu
+        await pool.query('INSERT INTO users (username, password) VALUES (?, ?)', [username, password]);
 
         req.session.user = { username: username, role: 'user' };
         res.redirect('/');
     } catch (err) {
         console.error(err);
         res.render('register', { title: 'Đăng Ký', error: 'Lỗi máy chủ' });
+    }
+});
+
+// Trang My Profile / Đổi mật khẩu
+app.get('/profile', (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
+    res.render('profile', {
+        title: 'My Profile',
+        user: req.session.user,
+        success: null,
+        error: null
+    });
+});
+
+app.post('/profile/change-password', async (req, res) => {
+    if (!req.session.user) return res.redirect('/login');
+
+    const { current_password, new_password, confirm_password } = req.body;
+    const username = req.session.user.username;
+
+    if (!current_password || !new_password || !confirm_password) {
+        return res.render('profile', {
+            title: 'My Profile',
+            user: req.session.user,
+            error: 'Vui lòng điền đầy đủ các thông tin!',
+            success: null
+        });
+    }
+
+    if (new_password !== confirm_password) {
+        return res.render('profile', {
+            title: 'My Profile',
+            user: req.session.user,
+            error: 'Mật khẩu xác nhận không trùng khớp!',
+            success: null
+        });
+    }
+
+    try {
+        const [rows] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
+        if (rows.length === 0) {
+            return res.render('profile', {
+                title: 'My Profile',
+                user: req.session.user,
+                error: 'Người dùng không tồn tại!',
+                success: null
+            });
+        }
+
+        const user = rows[0];
+        // Kiểm tra mật khẩu hiện tại: hỗ trợ cả plain text lẫn bcrypt cũ
+        const isMatch = (user.password === current_password) || (await bcrypt.compare(current_password, user.password).catch(() => false));
+        if (!isMatch) {
+            return res.render('profile', {
+                title: 'My Profile',
+                user: req.session.user,
+                error: 'Mật khẩu hiện tại không chính xác!',
+                success: null
+            });
+        }
+
+        // Cập nhật mật khẩu mới TRỰC TIẾP DẠNG SỐ / CHỮ THƯỜNG (không mã hóa) vào MySQL
+        await pool.query('UPDATE users SET password = ? WHERE username = ?', [new_password, username]);
+
+        return res.render('profile', {
+            title: 'My Profile',
+            user: req.session.user,
+            success: 'Đổi mật khẩu thành công!',
+            error: null
+        });
+    } catch (err) {
+        console.error('Lỗi khi đổi mật khẩu:', err);
+        return res.render('profile', {
+            title: 'My Profile',
+            user: req.session.user,
+            error: 'Lỗi hệ thống khi cập nhật mật khẩu!',
+            success: null
+        });
     }
 });
 

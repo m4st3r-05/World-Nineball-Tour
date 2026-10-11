@@ -1,74 +1,206 @@
-﻿<%- include('partials/header') %>
+<%- include('partials/header') %>
 
-<section class="profile-page-wrap">
-    <div class="profile-card">
-        <div class="profile-avatar-block">
-            <div class="profile-avatar">
-                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
+<section class="change-pw-page">
+    <div class="change-pw-container">
+        <div class="change-pw-card">
+            <div class="change-pw-badge-wrap">
+                <div class="change-pw-badge">
+                    <span>Change Password</span>
+                </div>
             </div>
-            <div class="profile-username"><%= user.username %></div>
-            <div class="profile-role-badge"><%= user.role === 'admin' ? 'Admin' : 'User' %></div>
+
+            <% if (typeof success !== 'undefined' && success) { %>
+                <div class="pw-alert pw-alert-success"><%= success %></div>
+            <% } %>
+            <% if (typeof error !== 'undefined' && error) { %>
+                <div class="pw-alert pw-alert-error"><%= error %></div>
+            <% } %>
+
+            <form action="/profile/change-password" method="POST" class="change-pw-form">
+                <div class="pw-field">
+                    <input type="password" name="current_password" placeholder="Current password" required>
+                </div>
+                <div class="pw-field">
+                    <input type="password" name="new_password" placeholder="New password" required>
+                </div>
+                <div class="pw-field">
+                    <input type="password" name="confirm_password" placeholder="Confirm password" required>
+                </div>
+                <div class="pw-action">
+                    <button type="submit" class="btn-change-pw">Change password</button>
+                </div>
+            </form>
         </div>
 
-        <div class="profile-section-header">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Change Password
-        </div>
-
-        <% if (typeof success !== 'undefined' && success) { %>
-            <div class="profile-alert profile-alert-success">Doi mat khau thanh cong!</div>
-        <% } %>
-        <% if (typeof error !== 'undefined' && error) { %>
-            <div class="profile-alert profile-alert-error"><%= error %></div>
-        <% } %>
-
-        <form action="/profile/change-password" method="POST" class="profile-form">
-            <div class="profile-input-group">
-                <label for="current_password">Current password</label>
-                <input type="password" id="current_password" name="current_password" placeholder="Nhap mat khau hien tai" required>
-            </div>
-            <div class="profile-input-group">
-                <label for="new_password">New password</label>
-                <input type="password" id="new_password" name="new_password" placeholder="Nhap mat khau moi" required>
-            </div>
-            <div class="profile-input-group">
-                <label for="confirm_password">Confirm password</label>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Xac nhan mat khau moi" required>
-            </div>
-            <div class="profile-btn-row">
-                <button type="submit" class="profile-submit-btn">Change password</button>
-            </div>
-        </form>
-
-        <p class="profile-hint">*Neu ban quen mat khau hien tai, hay lien he quan tri vien de duoc ho tro.</p>
+        <p class="change-pw-note">
+            *If you don't remember your current password, you can restore it by <strong>clicking here</strong>.
+        </p>
     </div>
 </section>
 
 <style>
-.profile-page-wrap{min-height:80vh;display:flex;align-items:center;justify-content:center;padding:40px 16px 80px;background:#eef1f4}
-.profile-card{background:#fff;border-radius:18px;box-shadow:0 8px 40px rgba(0,0,0,.12);width:100%;max-width:520px;overflow:hidden}
-.profile-avatar-block{background:linear-gradient(135deg,#0a1628,#17314d);display:flex;flex-direction:column;align-items:center;padding:36px 24px 28px;gap:8px}
-.profile-avatar{width:88px;height:88px;border-radius:50%;background:rgba(255,255,255,.1);border:3px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;color:#fff;margin-bottom:6px}
-.profile-username{font-size:1.3rem;font-weight:900;color:#fff;letter-spacing:.5px}
-.profile-role-badge{font-size:.75rem;font-weight:700;background:rgba(255,255,255,.12);color:#c9d8ef;padding:4px 14px;border-radius:20px}
-.profile-section-header{background:#0a1628;color:#fff;font-size:.9rem;font-weight:800;padding:14px 28px;display:flex;align-items:center;gap:10px;justify-content:center}
-.profile-alert{margin:16px 28px 0;padding:12px 16px;border-radius:8px;font-size:.85rem;font-weight:700}
-.profile-alert-success{background:#e6f9f0;color:#1a7c4f;border:1px solid #a3e4c4}
-.profile-alert-error{background:#fff0f3;color:#c00025;border:1px solid #ffb3c1}
-.profile-form{padding:24px 28px 8px;display:flex;flex-direction:column;gap:16px}
-.profile-input-group label{display:block;font-size:.78rem;font-weight:700;color:#7a8fa8;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
-.profile-input-group input{width:100%;padding:12px 16px;border:1.5px solid #dde3ec;border-radius:8px;font-size:.95rem;font-family:'Montserrat',sans-serif;background:#f7f9fb;color:#1a2d5a;outline:none;transition:border-color .2s}
-.profile-input-group input:focus{border-color:#1a2d5a;background:#fff}
-.profile-btn-row{display:flex;justify-content:flex-end;padding-top:4px}
-.profile-submit-btn{background:#1a5c45;color:#fff;border:none;border-radius:20px;font-size:.88rem;font-weight:800;padding:11px 28px;cursor:pointer;transition:background .2s,transform .15s}
-.profile-submit-btn:hover{background:#22704f;transform:translateY(-1px)}
-.profile-hint{text-align:center;color:#8a9ab5;font-size:.78rem;font-style:italic;padding:14px 28px 26px}
+.change-pw-page {
+    background-color: #eef1f5;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px 90px;
+    box-sizing: border-box;
+}
+
+.change-pw-container {
+    width: 100%;
+    max-width: 980px;
+}
+
+.change-pw-card {
+    background: #ffffff;
+    border-radius: 24px;
+    border: 1px solid #e2e7ee;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.05);
+    position: relative;
+    padding: 46px 45px 36px;
+    margin-bottom: 18px;
+}
+
+.change-pw-badge-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.change-pw-badge {
+    background-color: #14243b;
+    color: #ffffff;
+    padding: 10px 58px;
+    border-radius: 0 0 16px 16px;
+    font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.change-pw-form {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pw-field input {
+    width: 100%;
+    height: 54px;
+    background: #ffffff;
+    border: 1px solid #d4dae3;
+    border-radius: 9px;
+    padding: 0 20px;
+    font-size: 0.98rem;
+    font-family: inherit;
+    color: #1a2a3a;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pw-field input::placeholder {
+    color: #8c9ba9;
+    font-weight: 400;
+}
+
+.pw-field input:focus {
+    border-color: #14243b;
+    box-shadow: 0 0 0 3px rgba(20, 36, 59, 0.08);
+}
+
+.pw-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 6px;
+}
+
+.btn-change-pw {
+    background-color: #1a7c52;
+    color: #ffffff;
+    border: none;
+    border-radius: 24px;
+    padding: 12px 34px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 12px rgba(26, 124, 82, 0.25);
+}
+
+.btn-change-pw:hover {
+    background-color: #219663;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(26, 124, 82, 0.35);
+}
+
+.btn-change-pw:active {
+    transform: translateY(0);
+}
+
+.change-pw-note {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: #3e4a59;
+    margin: 0;
+    padding-left: 4px;
+    line-height: 1.5;
+}
+
+.change-pw-note strong {
+    font-weight: 800;
+    color: #14243b;
+    cursor: pointer;
+}
+
+.pw-alert {
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin: 10px 0 16px;
+}
+
+.pw-alert-success {
+    background: #e7f7ed;
+    color: #177a43;
+    border: 1px solid #b7e8c9;
+}
+
+.pw-alert-error {
+    background: #fde8e8;
+    color: #c81e1e;
+    border: 1px solid #f8b4b4;
+}
+
+@media (max-width: 768px) {
+    .change-pw-card {
+        padding: 40px 20px 25px;
+    }
+    .change-pw-badge {
+        padding: 8px 30px;
+        font-size: 1.1rem;
+    }
+    .pw-field input {
+        height: 48px;
+    }
+    .pw-action {
+        justify-content: center;
+    }
+    .btn-change-pw {
+        width: 100%;
+    }
+}
 </style>
 
 <%- include('partials/footer') %>
