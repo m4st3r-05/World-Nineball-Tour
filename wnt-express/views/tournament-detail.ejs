@@ -96,33 +96,85 @@
 <section id="matches-section" class="td-matches-wrap" style="display: none;">
     <div class="td-matches-header">
         <div class="td-matches-title">32-player knockout</div>
-        <div class="td-matches-meta">Race to 9 • live scores</div>
+        <div class="td-matches-meta">
+            Race to <%= tournament.raceTarget || 9 %> • live scores
+            <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                <span class="td-admin-badge">⚡ CHẾ ĐỘ QUẢN TRỊ VIÊN</span>
+            <% } %>
+        </div>
     </div>
 
     <% const tournamentMatches = Array.isArray(tournament.matches) ? tournament.matches : []; %>
+    <% const allPlayersList = Array.isArray(tournament.allPlayers) ? tournament.allPlayers : []; %>
     <% tournamentMatches.forEach(function(round, roundIndex) { %>
         <div class="td-round-block">
             <div class="td-round-header"><%= round.label %></div>
             <% const roundMatches = Array.isArray(round.matches) ? round.matches : []; %>
             <% roundMatches.forEach(function(match) { %>
-                <div class="td-match-row">
-                    <div class="td-match-seed">#<%= match.player1 && match.player1.rank ? match.player1.rank : '' %></div>
-                    <div class="td-player td-player-left">
-                        <span class="td-player-name"><%= match.player1 ? match.player1.name : 'TBD' %></span>
-                        <span class="td-country"><%= match.player1 ? match.player1.country : '' %></span>
-                    </div>
+                <div class="td-match-row <%= (typeof user !== 'undefined' && user && user.role === 'admin') ? 'td-match-row-admin' : '' %>">
+                    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                        <!-- Form chỉnh sửa trực tiếp dành cho Admin -->
+                        <form method="POST" action="/tournaments/<%= tournament.id %>/matches/<%= match.id %>/update" class="td-admin-match-form">
+                            <div class="td-admin-match-p1">
+                                <select name="player1_id" class="td-admin-select" title="Chọn cơ thủ 1">
+                                    <% allPlayersList.forEach(function(pl) { %>
+                                        <option value="<%= pl.id %>" <%= (match.player1 && match.player1.id === pl.id) ? 'selected' : '' %>>
+                                            #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
 
-                    <div class="td-score-box">
-                        <span class="td-score <%= Number(match.score1) === Number(tournament.raceTarget || 9) ? 'td-score-winner' : '' %>"><%= match.score1 || 0 %></span>
-                        <span class="td-score-divider">vs</span>
-                        <span class="td-score <%= Number(match.score2) === Number(tournament.raceTarget || 9) ? 'td-score-winner' : '' %>"><%= match.score2 || 0 %></span>
-                    </div>
+                            <div class="td-admin-match-scores">
+                                <input type="number" name="score1" value="<%= match.score1 || 0 %>" min="0" max="<%= tournament.raceTarget || 9 %>" class="td-admin-score-input" required>
+                                <span class="td-score-divider">VS</span>
+                                <input type="number" name="score2" value="<%= match.score2 || 0 %>" min="0" max="<%= tournament.raceTarget || 9 %>" class="td-admin-score-input" required>
+                            </div>
 
-                    <div class="td-player td-player-right">
-                        <span class="td-country"><%= match.player2 ? match.player2.country : '' %></span>
-                        <span class="td-player-name"><%= match.player2 ? match.player2.name : 'TBD' %></span>
-                    </div>
-                    <div class="td-match-time"><%= match.scheduled || 'TBD' %></div>
+                            <div class="td-admin-match-p2">
+                                <select name="player2_id" class="td-admin-select" title="Chọn cơ thủ 2">
+                                    <% allPlayersList.forEach(function(pl) { %>
+                                        <option value="<%= pl.id %>" <%= (match.player2 && match.player2.id === pl.id) ? 'selected' : '' %>>
+                                            #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
+
+                            <div class="td-admin-match-actions">
+                                <label class="td-admin-live-toggle" title="Tích để phát trực tiếp">
+                                    <input type="checkbox" name="is_live" <%= match.is_live ? 'checked' : '' %>>
+                                    <span>LIVE</span>
+                                </label>
+                                <input type="text" name="scheduled" value="<%= match.scheduled || 'TBD' %>" class="td-admin-time-input" placeholder="Giờ thi đấu">
+                                <button type="submit" class="td-admin-save-btn">💾 LƯU</button>
+                            </div>
+                        </form>
+                    <% } else { %>
+                        <!-- Giao diện xem bình thường dành cho User & Khách -->
+                        <div class="td-match-seed">#<%= match.player1 && match.player1.rank ? match.player1.rank : '' %></div>
+                        <div class="td-player td-player-left">
+                            <span class="td-player-name"><%= match.player1 ? match.player1.name : 'TBD' %></span>
+                            <span class="td-country"><%= match.player1 ? match.player1.country : '' %></span>
+                        </div>
+
+                        <div class="td-score-box">
+                            <span class="td-score <%= Number(match.score1) === Number(tournament.raceTarget || 9) ? 'td-score-winner' : '' %>"><%= match.score1 || 0 %></span>
+                            <span class="td-score-divider">vs</span>
+                            <span class="td-score <%= Number(match.score2) === Number(tournament.raceTarget || 9) ? 'td-score-winner' : '' %>"><%= match.score2 || 0 %></span>
+                        </div>
+
+                        <div class="td-player td-player-right">
+                            <span class="td-country"><%= match.player2 ? match.player2.country : '' %></span>
+                            <span class="td-player-name"><%= match.player2 ? match.player2.name : 'TBD' %></span>
+                        </div>
+                        <div class="td-match-time">
+                            <% if (match.is_live) { %>
+                                <span class="td-live-indicator">● LIVE</span>
+                            <% } %>
+                            <%= match.scheduled || 'TBD' %>
+                        </div>
+                    <% } %>
                 </div>
             <% }); %>
         </div>
@@ -132,7 +184,12 @@
 <section id="live-section" class="td-live-wrap" style="display: none;">
     <div class="td-live-header">
         <div class="td-live-title">Live now</div>
-        <div class="td-live-meta">Race to 9</div>
+        <div class="td-live-meta">
+            Race to <%= tournament.raceTarget || 9 %>
+            <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                <span class="td-admin-badge">⚡ CHẾ ĐỘ QUẢN TRỊ VIÊN</span>
+            <% } %>
+        </div>
     </div>
 
     <%
@@ -140,35 +197,72 @@
         ? tournament.matches.flatMap(function(round) { return Array.isArray(round.matches) ? round.matches : []; })
             .filter(function(match) { return match.is_live === true || match.is_live === 1; })
         : [];
+      const allTournamentMatches = Array.isArray(tournament.matches)
+        ? tournament.matches.flatMap(function(round) { return Array.isArray(round.matches) ? round.matches : []; })
+        : [];
     %>
+
+    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+        <!-- Bảng điều khiển chọn trận Live cho Admin -->
+        <div class="td-admin-live-panel">
+            <h4 style="margin: 0 0 10px 0; color: #ffd24d; font-size: 0.9rem; text-transform: uppercase;">
+                🔴 Quản lý trận đấu Live (Bật / Tắt trạng thái Live trực tiếp)
+            </h4>
+            <div class="td-admin-live-grid">
+                <% allTournamentMatches.forEach(function(m) { %>
+                    <form method="POST" action="/tournaments/<%= tournament.id %>/matches/<%= m.id %>/toggle-live" class="td-admin-live-card <%= m.is_live ? 'is-active-live' : '' %>">
+                        <div class="td-admin-live-info">
+                            <strong><%= m.player1 ? m.player1.name : 'TBD' %></strong> 
+                            <span style="color: #ff4d4d; font-weight: 900;"> <%= m.score1 %> - <%= m.score2 %> </span> 
+                            <strong><%= m.player2 ? m.player2.name : 'TBD' %></strong>
+                            <small style="display: block; opacity: 0.7;"><%= m.round || 'Round 1' %> • <%= m.scheduled %></small>
+                        </div>
+                        <input type="hidden" name="is_live" value="<%= m.is_live ? '0' : '1' %>">
+                        <button type="submit" class="td-admin-toggle-live-btn <%= m.is_live ? 'btn-live-off' : 'btn-live-on' %>">
+                            <%= m.is_live ? '⏹ Dừng Live' : '▶ Bật Live' %>
+                        </button>
+                    </form>
+                <% }); %>
+            </div>
+        </div>
+    <% } %>
 
     <% if (liveMatches.length) { %>
         <% liveMatches.forEach(function(match) { %>
             <div class="td-live-row">
-                <div class="td-live-seed">#<%= match.player1.rank %></div>
-                <div class="td-live-player"><%= match.player1.name %> <span><%= match.player1.country %></span></div>
+                <div class="td-live-seed">#<%= match.player1 && match.player1.rank ? match.player1.rank : '' %></div>
+                <div class="td-live-player"><%= match.player1 ? match.player1.name : 'TBD' %> <span><%= match.player1 ? match.player1.country : '' %></span></div>
                 <div class="td-live-score">
-                    <span class="td-live-number <%= match.score1 === tournament.raceTarget ? 'td-live-number-winner' : '' %>"><%= match.score1 %></span>
+                    <span class="td-live-number <%= Number(match.score1) === Number(tournament.raceTarget || 9) ? 'td-live-number-winner' : '' %>"><%= match.score1 %></span>
                     <span class="td-live-divider">VS</span>
-                    <span class="td-live-number <%= match.score2 === tournament.raceTarget ? 'td-live-number-winner' : '' %>"><%= match.score2 %></span>
+                    <span class="td-live-number <%= Number(match.score2) === Number(tournament.raceTarget || 9) ? 'td-live-number-winner' : '' %>"><%= match.score2 %></span>
                 </div>
-                <div class="td-live-player td-live-player-right"><%= match.player2.name %> <span><%= match.player2.country %></span></div>
-                <div class="td-live-time"><%= match.scheduled %></div>
+                <div class="td-live-player td-live-player-right"><%= match.player2 ? match.player2.name : 'TBD' %> <span><%= match.player2 ? match.player2.country : '' %></span></div>
+                <div class="td-live-time">
+                    <span class="td-live-indicator">● LIVE NOW</span>
+                    <%= match.scheduled %>
+                </div>
             </div>
         <% }); %>
     <% } else { %>
-        <div class="td-live-empty">No live matches at the moment.</div>
+        <div class="td-live-empty">Không có trận đấu nào đang diễn ra trực tiếp.</div>
     <% } %>
 </section>
 
 <section id="ranking-section" class="td-ranking-wrap" style="display: none;">
     <div class="td-ranking-header">
         <div class="td-ranking-title">Top 4 prize ranking</div>
-        <div class="td-ranking-meta"><%= tournament.shortName || tournament.short_name || tournament.name %></div>
+        <div class="td-ranking-meta">
+            <%= tournament.shortName || tournament.short_name || tournament.name %>
+            <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+                <span class="td-admin-badge">⚡ CHẾ ĐỘ QUẢN TRỊ VIÊN</span>
+            <% } %>
+        </div>
     </div>
+
     <%
       const rankingPlayers = Array.isArray(tournament.participants)
-        ? tournament.participants.slice().sort(function(a, b) { return Number(a.rank || 0) - Number(b.rank || 0); }).slice(0, 4)
+        ? tournament.participants.slice(0, 4)
         : [];
       const rankingPayouts = Array.isArray(tournament.prizeBreakdown) ? tournament.prizeBreakdown : [];
       const getPayout = function(position) {
@@ -179,6 +273,63 @@
       };
       const semiFinalistPayout = getPayout('semi-finalists');
     %>
+
+    <% if (typeof user !== 'undefined' && user && user.role === 'admin') { %>
+        <!-- Form chỉnh sửa Top 4 người chơi trong giải dành cho Admin -->
+        <div class="td-admin-ranking-box">
+            <h4 style="margin: 0 0 14px 0; color: #ffd24d; font-size: 0.95rem; text-transform: uppercase;">
+                🏆 Thay đổi thứ hạng Top 4 giải đấu trực tiếp:
+            </h4>
+            <form method="POST" action="/tournaments/<%= tournament.id %>/ranking/update" class="td-admin-ranking-form">
+                <div class="td-admin-rank-field">
+                    <label>🥇 Vô địch (Champion):</label>
+                    <select name="rank1_id" class="td-admin-select">
+                        <% allPlayersList.forEach(function(pl) { %>
+                            <option value="<%= pl.id %>" <%= (rankingPlayers[0] && rankingPlayers[0].id === pl.id) ? 'selected' : '' %>>
+                                #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="td-admin-rank-field">
+                    <label>🥈 Á quân (Runner-up):</label>
+                    <select name="rank2_id" class="td-admin-select">
+                        <% allPlayersList.forEach(function(pl) { %>
+                            <option value="<%= pl.id %>" <%= (rankingPlayers[1] && rankingPlayers[1].id === pl.id) ? 'selected' : '' %>>
+                                #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="td-admin-rank-field">
+                    <label>🥉 Hạng 3 (Semi-finalist 1):</label>
+                    <select name="rank3_id" class="td-admin-select">
+                        <% allPlayersList.forEach(function(pl) { %>
+                            <option value="<%= pl.id %>" <%= (rankingPlayers[2] && rankingPlayers[2].id === pl.id) ? 'selected' : '' %>>
+                                #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div class="td-admin-rank-field">
+                    <label>🥉 Hạng 4 (Semi-finalist 2):</label>
+                    <select name="rank4_id" class="td-admin-select">
+                        <% allPlayersList.forEach(function(pl) { %>
+                            <option value="<%= pl.id %>" <%= (rankingPlayers[3] && rankingPlayers[3].id === pl.id) ? 'selected' : '' %>>
+                                #<%= pl.rank %> <%= pl.name %> (<%= pl.country %>)
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <button type="submit" class="td-admin-ranking-submit-btn">💾 CẬP NHẬT THỨ HẠNG GIẢI ĐẤU</button>
+            </form>
+        </div>
+    <% } %>
+
     <% if (rankingPlayers.length) { %>
         <% rankingPlayers.forEach(function(player, index) { %>
             <div class="td-ranking-row <%= index === 0 ? 'td-ranking-row-first' : '' %>">
@@ -186,7 +337,7 @@
                 <% if (player.portrait) { %>
                     <img class="td-ranking-portrait" src="<%= player.portrait %>" alt="<%= player.name %>">
                 <% } else { %>
-                    <div class="td-ranking-flag"><%= player.flag || '' %></div>
+                    <div class="td-ranking-flag"><%= player.flag || '🎱' %></div>
                 <% } %>
                 <div class="td-ranking-player">
                     <div class="td-ranking-name"><%= player.name %></div>
@@ -196,7 +347,7 @@
             </div>
         <% }); %>
     <% } else { %>
-        <div class="td-ranking-empty">No ranking data available.</div>
+        <div class="td-ranking-empty">Không có dữ liệu bảng xếp hạng giải đấu.</div>
     <% } %>
 </section>
 
@@ -258,6 +409,7 @@
     if (infoTab) {
       infoTab.addEventListener('click', function (event) {
         event.preventDefault();
+        window.location.hash = 'info';
         showInfo();
       });
     }
@@ -265,6 +417,7 @@
     if (matchesTab) {
       matchesTab.addEventListener('click', function (event) {
         event.preventDefault();
+        window.location.hash = 'matches';
         showMatches();
       });
     }
@@ -272,6 +425,7 @@
     if (liveTab) {
       liveTab.addEventListener('click', function (event) {
         event.preventDefault();
+        window.location.hash = 'live';
         showLive();
       });
     }
@@ -279,11 +433,22 @@
     if (rankingTab) {
       rankingTab.addEventListener('click', function (event) {
         event.preventDefault();
+        window.location.hash = 'ranking';
         showRanking();
       });
     }
 
-    showInfo();
+    // Tự động mở đúng tab theo URL Hash (#matches, #live, #ranking)
+    const hash = window.location.hash;
+    if (hash === '#matches' || hash === '#matches-section') {
+      showMatches();
+    } else if (hash === '#live' || hash === '#live-section') {
+      showLive();
+    } else if (hash === '#ranking' || hash === '#ranking-section') {
+      showRanking();
+    } else {
+      showInfo();
+    }
   });
 </script>
 
@@ -827,6 +992,223 @@ main { padding-bottom: 0 !important; }
     font-weight: 700;
 }
 
+/* =================== ADMIN IN-PLACE EDIT STYLES =================== */
+.td-admin-badge {
+    background: #ffd24d;
+    color: #000;
+    font-size: 0.68rem;
+    font-weight: 900;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    display: inline-block;
+    letter-spacing: 0.5px;
+}
+
+.td-match-row-admin {
+    padding: 10px 14px;
+    display: block !important;
+}
+
+.td-admin-match-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+.td-admin-match-p1, .td-admin-match-p2 {
+    flex: 1 1 200px;
+}
+
+.td-admin-select {
+    width: 100%;
+    background: #0f2137;
+    color: #fff;
+    border: 1px solid #335985;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    outline: none;
+    cursor: pointer;
+}
+.td-admin-select:focus {
+    border-color: #ffd24d;
+}
+
+.td-admin-match-scores {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.td-admin-score-input {
+    width: 50px;
+    height: 40px;
+    background: #0a1628;
+    color: #ffd24d;
+    border: 2px solid #335985;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.15rem;
+    font-weight: 900;
+    outline: none;
+}
+.td-admin-score-input:focus {
+    border-color: #ffd24d;
+}
+
+.td-admin-match-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.td-admin-live-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(239, 61, 69, 0.2);
+    border: 1px solid #ef3d45;
+    color: #ff6b72;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    cursor: pointer;
+}
+.td-admin-live-toggle input {
+    cursor: pointer;
+    accent-color: #ef3d45;
+}
+
+.td-admin-time-input {
+    background: #0f2137;
+    color: #d6e2f4;
+    border: 1px solid #335985;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    width: 110px;
+    outline: none;
+}
+
+.td-admin-save-btn {
+    background: #00e5ff;
+    color: #051329;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    padding: 8px 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.td-admin-save-btn:hover {
+    background: #5cf2ff;
+    transform: translateY(-1px);
+}
+
+.td-live-indicator {
+    color: #ff4d4d;
+    font-weight: 900;
+    margin-right: 4px;
+    animation: blink 1.2s infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Admin Live Panel */
+.td-admin-live-panel {
+    background: #0e1d33;
+    border: 1px solid #23436a;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 20px;
+}
+.td-admin-live-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+}
+.td-admin-live-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #17314d;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.08);
+}
+.td-admin-live-card.is-active-live {
+    border-color: #ef3d45;
+    background: #271a25;
+}
+.td-admin-live-info {
+    font-size: 0.82rem;
+    color: #fff;
+}
+.td-admin-toggle-live-btn {
+    border: none;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+.btn-live-on {
+    background: #ef3d45;
+    color: #fff;
+}
+.btn-live-off {
+    background: #555;
+    color: #eee;
+}
+
+/* Admin Tournament Ranking Box */
+.td-admin-ranking-box {
+    background: #0e1d33;
+    border: 1px solid #23436a;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 24px;
+}
+.td-admin-ranking-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 14px;
+    align-items: flex-end;
+}
+.td-admin-rank-field label {
+    display: block;
+    color: #b5c7df;
+    font-size: 0.78rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+.td-admin-ranking-submit-btn {
+    background: #ffd24d;
+    color: #0b1526;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 900;
+    padding: 10px 16px;
+    cursor: pointer;
+    grid-column: 1 / -1;
+    margin-top: 6px;
+    transition: 0.2s;
+}
+.td-admin-ranking-submit-btn:hover {
+    background: #ffe082;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .td-meta-grid {
@@ -871,6 +1253,8 @@ main { padding-bottom: 0 !important; }
     }
     .td-ranking-header { align-items: flex-start; flex-direction: column; }
     .td-ranking-meta { text-align: left; }
+    .td-admin-match-form { flex-direction: column; align-items: stretch; }
+    .td-admin-match-scores { justify-content: center; }
 }
 </style>
 

@@ -140,9 +140,28 @@ async function getTournamentDetailById(id) {
             ORDER BY m.round_order ASC, m.id ASC
         `, [id]);
 
+        const allPlayers = await getPlayers();
         const fallbackTournament = fallbackData.tournaments.find((item) => item.id === Number(id));
         const normalizedTournament = normalizeTournament(tournament);
-        normalizedTournament.participants = await getPlayers();
+        normalizedTournament.allPlayers = allPlayers;
+
+        // Custom top4 if set
+        if (tournament.top4_player_ids) {
+            try {
+                const ids = tournament.top4_player_ids.split(',').map(s => Number(s.trim())).filter(Boolean);
+                const customParticipants = ids.map(pid => allPlayers.find(p => p.id === pid)).filter(Boolean);
+                if (customParticipants.length > 0) {
+                    normalizedTournament.participants = customParticipants;
+                } else {
+                    normalizedTournament.participants = allPlayers;
+                }
+            } catch (e) {
+                normalizedTournament.participants = allPlayers;
+            }
+        } else {
+            normalizedTournament.participants = allPlayers;
+        }
+
         normalizedTournament.matches = matches.length ? groupMatchesByRound(matches, normalizedTournament.raceTarget || 9) : (fallbackTournament ? fallbackTournament.matches : []);
         normalizedTournament.prizeBreakdown = normalizedTournament.prizeBreakdown.length ? normalizedTournament.prizeBreakdown : (fallbackTournament ? fallbackTournament.prizeBreakdown : []);
         return normalizedTournament;
@@ -228,6 +247,60 @@ app.post('/admin/matches/:id/score', isAdmin, async (req, res) => {
     const isLive = req.body.is_live === 'on' || req.body.is_live === '1' || req.body.is_live === 1 ? 1 : 0;
     await pool.query('UPDATE matches SET score1 = ?, score2 = ?, is_live = ? WHERE id = ?', [score1, score2, isLive, req.params.id]);
     res.redirect('/admin');
+});
+
+// Admin update match directly from tournament detail page
+app.post('/tournaments/:tournamentId/matches/:matchId/update', isAdmin, async (req, res) => {
+    try {
+        const { player1_id, player2_id, score1, score2, is_live, scheduled } = req.body;
+        const s1 = Number(score1 || 0);
+        const s2 = Number(score2 || 0);
+        const live = is_live === 'on' || is_live === '1' || is_live === 1 || is_live === true ? 1 : 0;
+        const p1Id = Number(player1_id);
+        const p2Id = Number(player2_id);
+        
+        await pool.query(
+            `UPDATE matches 
+             SET player1_id = ?, player2_id = ?, score1 = ?, score2 = ?, is_live = ?, scheduled = COALESCE(?, scheduled) 
+             WHERE id = ? AND tournament_id = ?`,
+            [p1Id, p2Id, s1, s2, live, scheduled || null, req.params.matchId, req.params.tournamentId]
+        );
+        res.redirect(`/tournaments/${req.params.tournamentId}#matches`);
+    } catch (err) {
+        console.error('Error updating match in tournament:', err);
+        res.redirect(`/tournaments/${req.params.tournamentId}#matches`);
+    }
+});
+
+// Admin toggle live status directly from Live tab
+app.post('/tournaments/:tournamentId/matches/:matchId/toggle-live', isAdmin, async (req, res) => {
+    try {
+        const isLive = req.body.is_live === '1' || req.body.is_live === 'on' ? 1 : 0;
+        await pool.query(
+            'UPDATE matches SET is_live = ? WHERE id = ? AND tournament_id = ?',
+            [isLive, req.params.matchId, req.params.tournamentId]
+        );
+        res.redirect(`/tournaments/${req.params.tournamentId}#live`);
+    } catch (err) {
+        console.error('Error toggling live status:', err);
+        res.redirect(`/tournaments/${req.params.tournamentId}#live`);
+    }
+});
+
+// Admin update top 4 tournament ranking directly from Ranking tab
+app.post('/tournaments/:tournamentId/ranking/update', isAdmin, async (req, res) => {
+    try {
+        const { rank1_id, rank2_id, rank3_id, rank4_id } = req.body;
+        const ids = [rank1_id, rank2_id, rank3_id, rank4_id].filter(Boolean).join(',');
+        await pool.query(
+            'UPDATE tournaments SET top4_player_ids = ? WHERE id = ?',
+            [ids, req.params.tournamentId]
+        );
+        res.redirect(`/tournaments/${req.params.tournamentId}#ranking`);
+    } catch (err) {
+        console.error('Error updating tournament ranking:', err);
+        res.redirect(`/tournaments/${req.params.tournamentId}#ranking`);
+    }
 });
 
 app.get('/login', (req, res) => {

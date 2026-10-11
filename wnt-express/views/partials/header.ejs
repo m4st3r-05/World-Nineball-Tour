@@ -26,9 +26,6 @@
         <nav class="nav-right">
             <ul>
                 <% if (typeof user !== 'undefined' && user) { %>
-                    <% if (user.role === 'admin') { %>
-                        <li><a href="/admin">⚙️ Admin</a></li>
-                    <% } %>
                     <li><a href="#">👤 My Profile</a></li>
                     <li><a href="#">❓ Support</a></li>
                     <li><a href="/logout">🚪 Logout</a></li>
