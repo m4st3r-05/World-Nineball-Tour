@@ -218,8 +218,12 @@
                             <small style="display: block; opacity: 0.7;"><%= m.round || 'Round 1' %> • <%= m.scheduled %></small>
                         </div>
                         <input type="hidden" name="is_live" value="<%= m.is_live ? '0' : '1' %>">
-                        <button type="submit" class="td-admin-toggle-live-btn <%= m.is_live ? 'btn-live-off' : 'btn-live-on' %>">
-                            <%= m.is_live ? '⏹ Dừng Live' : '▶ Bật Live' %>
+                        <button type="submit" class="td-admin-toggle-live-btn <%= m.is_live ? 'btn-live-off' : 'btn-live-on' %>" title="<%= m.is_live ? 'Tắt Live (Dừng phát)' : 'Bật Live (Phát trực tiếp)' %>">
+                            <% if (m.is_live) { %>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+                            <% } else { %>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+                            <% } %>
                         </button>
                     </form>
                 <% }); %>
@@ -1155,19 +1159,36 @@ main { padding-bottom: 0 !important; }
 }
 .td-admin-toggle-live-btn {
     border: none;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 800;
-    padding: 6px 10px;
+    border-radius: 8px;
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+.td-admin-toggle-live-btn:hover {
+    transform: scale(1.08);
 }
 .btn-live-on {
-    background: #ef3d45;
-    color: #fff;
+    background: #00e5ff;
+    color: #071529;
+    box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+}
+.btn-live-on:hover {
+    background: #5cf2ff;
+    box-shadow: 0 0 16px rgba(0, 229, 255, 0.6);
 }
 .btn-live-off {
-    background: #555;
-    color: #eee;
+    background: #ef3d45;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(239, 61, 69, 0.4);
+}
+.btn-live-off:hover {
+    background: #ff525a;
+    box-shadow: 0 0 18px rgba(239, 61, 69, 0.7);
 }
 
 /* Admin Tournament Ranking Box */
